@@ -461,7 +461,6 @@ namespace OTS
         private void buttonStartUp_Click(object sender, EventArgs e)
         {
             AutoStartup = false;
-
             try
             {
                 if (lbl_BrokerName.Text == "BROKER NAME" || lbl_BrokerName.Text == "Unknown") //21.05.15
