@@ -80,6 +80,7 @@ namespace ITS
         public List<TClientConnectionToITS> RetrySending = new List<TClientConnectionToITS>();
         //-----------        
         public static string Vname;
+
         public Form1()
         {
             AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
