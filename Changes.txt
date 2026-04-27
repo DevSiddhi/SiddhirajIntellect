@@ -1,0 +1,133 @@
+
+=======================================================================================================
+
+
+KIFS_ITS_20032015.rar  Avi	
+
+case  74 for holding with collatral added
+
+case  75 for all client Holding is added
+
+case 17,18,19,26,27,28,29 
+
+for Intraday delivery added
+
+
+
+for trader list 
+
+ProcessOTSReply()
+
+
+ if (IAHdr.ReplyType == 5 && IAHdr.TraderLength == 1)
+                    {
+                        Compress = new byte[IAHdr.ReplyLen];
+                        SockBufOTSReply.Read(Compress, IAHdr.ReplyLen);
+                        Decompress = DataCompression(Compress);
+                        Commpress.WriteAndExtend(Decompress, Decompress.Length);
+                    }
+                    else
+                    {
+                        Array.Resize(ref AllReplyArray, IAHdr.ReplyCnt);
+                        for (int i = 0; i < IAHdr.ReplyCnt; i++)
+                        {
+                            SockBufOTSReply.Read(buffToRead, IAHdr.ReplyRecSize);
+                            AllReplyArray[i] = buffToRead.ToAllReplyStruct(IAHdr.ReplyType);
+                        }
+                    }
+
+
+if (IAHdr.ReplyType == 5 && IAHdr.TraderLength == 1)
+                                {
+                                    byte[] Data=new byte[200];
+                                    int length=IAHdr.ReplyCnt + Reach;
+
+                                    Reach = Client.ClientArray.Length;
+
+                                    Array.Resize(ref AllReplyArrayNew, IAHdr.ReplyCnt);
+                                    Array.Resize(ref Client.ClientArray, Client.ClientArray.Length+IAHdr.ReplyCnt);
+
+                                    for (int i = 0; i < IAHdr.ReplyCnt; i++)
+                                    {
+                                        Commpress.Read(Data, IAHdr.ReplyRecSize);
+                                        AllReplyArrayNew[i] = Data.ToAllReplyStruct(IAHdr.ReplyType);
+                                        Client.ClientArray[Reach] = new string(AllReplyArrayNew[i].TraderListReplyRec.TraderID, 0, AllReplyArrayNew[i].TraderListReplyRec.TDRIDLength);
+                                        Reach++;
+                                    }
+
+                                    Client.ClientCnt = Client.ClientArray.Length;
+                                }
+
+ if(IAHdr.ReplyType==5 && IAHdr.TraderLength==1)
+                    {
+                        SendToClientNew(Client, IAHdr, Compress, IAError);                        
+                    }
+
+*******************************************************************************************
+
+31.03.2015
+Add new case (case 42) for Scrip information
+Add Request Structure for Scrip information "TScripInfoRequestRecord"
+Add Reply Structure for Scrip information "TScripInfoReplyRecord".
+
+*******************************************************************************************
+24.04.2015
+KIFS ITS is taken an LKP ssl added for Shift F7 Changes
+
+
+
+*******************************************************************************************
+
+04.05.2015
+
+71 & 72 - Request Types for Orders Trades.
+ToAllRequestsArray(), ToAllRequestsStruct(), ToAllReplyArray(), ToAllReplyStruct()
+
+*******************************************************************************************
+
+20.05.15 
+
+New Req - 170 for HoldingValuationReport - With BOD Var & Last Rate.
+Also, 3 fields in Security Info - Intra Delivery Var & 1 reserved.
+============================================================================================
+28.05.2015
+
+For Intradelivery feature in LKP ITS SSL changed to KIFS
+
+----In      public struct TScripInfoReplyRecord  new file added
+----New struture created     public struct THoldingsValuationReportWithMemVar
+----Code added For case 71,72,170
+
+===============================================================================================
+
+12.10.2015---Yashwant
+
+For error logging added in Form 
+private void SendToClientNew()  method
+   listBox1.Items.Insert(0, Client.FEUserID + "****  Return from SendToClientNew as BadClientReject *****" + str+ ",ReplyType =" + IAHdr2.ReplyType); //05.10.15--Yashwant
+          
+ 
+===============================================================================================
+
+22.07.2016---Krutika
+1) Changed version to 16.07.22.0
+2) Changed Form1.text property to ITS_Pure
+
+==================================================================================================
+28-07-2016 Krutika
+=>SsslStartMode=SslNone to SslImplicit
+=>Added Certificate of Nirman
+==================================================================================================
+29.08.16 Prerna
+Adding Changes in AllowMcxDeriv and ChannelID_MD  TLoginReplyRecordNew
+==================================================================================================
+30.08.16
+Added sslimplicit Certificate of Nirman
+
+==================================================================================================
+09.09.16 - Rohan
+MTM changes done in IntellectUtilities.cs
+
+===============================================================================================
+17.11.2016 Rohan
+1) Code added for new Request Type 76, which will fetch all equity holdings of all clients.
