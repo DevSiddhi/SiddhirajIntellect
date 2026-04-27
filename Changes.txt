@@ -1,0 +1,411 @@
+19.04.2014
+
+Chages added for Disclose Qty.
+New cases added for disclosed qty.
+New structures added for disclosed qty.
+
+
+21.04.2014
+
+changes added for LotQty.
+New cases added for LotQty.
+New structures added for LotQty.
+
+
+13.05.2014
+Only version is changed.
+
+15.08.2014
+
+Log writing for DB Requests done. - btn_LogReqtoDB_Click()
+in ThreadDB --> MakeCommandText()  -- 6 places log writing --> P,M,C (Eq & FO)
+
+27.08.2014
+
+OTS Icon Change.
+New Thread Class -> TOTSThread.cs -> new Logic of EC & Processing functions.
+In form1.cs -> Commented Old, changes functions are:
+- NewDelegate
+- SendPendingRequestFromList() - new
+- buttonStartUp_Click()
+- FormClosing()
+- ThreadTerminationHandler()
+- GetFreeThreadCnt() - new.
+
+28.08.2014
+
+ExType = 0;
+ThreadTerminationHandler()
+Execute()
+
+30.08.2014
+
+ThreadTerminationHandler.
+
+30.08.2014 Ver1
+
+ScripMgnReply & Logout - Make Command text added.
+
+
+04.09.2014
+
+Form1_FormClosed() - New event to kill threads and listening ports.
+In ThreadTerminationHandler -> Commented Suspending Part from there.
+Declaring _ThreadTerminationNew at Form1 load & using this in thread class rather than sending in each thread as a parameter.
+Using BeginInvoke.
+
+05.09.2014
+
+TOTSThread.cs - > Invoke used instead of BeginInvoke.
+
+09.09.2014 / 10.09.2014
+
+Form1_FormClosed() -> ListenToITS.Abort(); //09.09.14
+
+11.09.2014
+
+In Form1_FormClosed() =>  if (ListenToITS != null) //11.09.14
+                	  ListenToITS.Abort(); //10.09.14
+
+12.09.2014
+
+OTS -> version change only.
+
+17.09.2014
+
+MakeCommandText() - Userinfo as parameter in P,M,C procedures. 06th Sept change updated in this.
+LogFile in HHMMss format. & writing same in form closing with file name change.
+
+11.10.2014
+
+For Version saving in database.
+MakeCommandText()
+CheckInfo2 = new string(OTSReqRec.AllReq.LoginRequest.Version,0,OTSReqRec.AllReq.LoginRequest.VersionLength);
+
+18.10.2014
+
+Userinfo for currency.
+If Nse FnO  order then, userinfo for Nse FnO  & 0 for Currency.
+If Nse Curr Order then, userinfo for Nse Curr & 0 for Nse FnO.
+
+Log writing for Currency.
+============================================================================================================================
+20.10.2014					--Harsh
+
+On Login With ReqType = 3 Version was Not getting inserted in DB
+==>TOTSThread.cs
+--MakeCommandText() in case 3, added else loop 
+[Code Snippet]
+  else //11.10.14 For Version in DB.                                          //Added this else on 20/10/2014 HK
+                            CheckInfo2 = new string(OTSReqRec.AllReq.LoginRequest.Version, 0, OTSReqRec.AllReq.LoginRequest.VersionLength); 
+===============================================================================================================================
+
+24.12.2014
+
+Intra Delivery Changes - New Request Structures.
+ReadBodyWithCases() - 14, 24, 34 cases
+WriteToDisplay() - As of Now only 14th case (modification & cancellation structure not sure).
+GetOrderType() - New function..
+Execute() & MakeCommandText() for 14th case.
+later sai did change for userinfo paramaetre pass
+
+===============================================================================================================================
+
+29.12.2014
+
+Reply structure added for Place Order.
+New function - ProcessOrderTypePlaceOrderRequest()
+
+===============================================================================================================================
+
+30.12.2014
+
+TOTSTHREAD.cs -> MakeCommandText(), ProcessOrderTypeModifyOrderRequest(), Execute() 
+Structure for modify/cancellation
+Form1.cs -> Converting Ordertype to normal order for EC & back to order type from EC Reply.
+ThreadTerminationHandler(), ConvertStructureToByteArr(), ProcessExchDataIn()
+New function - ConvertOrderTypeToNormalOrderForEC(), CheckForOrderTypeReplyfrmEC(), GetReqTypeOnExch(), ReadBodyWithExchConnBodyNew()
+
+===============================================================================================================================
+
+31.12.2014
+
+TDerivOrderExchReplyRecord - Latest Structure from EC to OTS
+Constants - New Class. & using Order type of these
+MakeDerivDescForOrderType(), derivinfo filling in cases of Place, modify & cancel, HandleException()
+and form1. normal function changes like previous
+
+===============================================================================================================================
+
+01.01.2015
+
+Request & reply types changed.
+Logic for modification imrpoved. as well as in cancellation.
+CheckForOrderTypeReplyfrmEC() - function addition for M & C.
+Eq & Deriv - both order place, modify & cancel done.
+
+
+TOrderConversionRec - 02.01.15 structure
+
+===============================================================================================================================
+
+14.01.2015
+
+using order conversion new structure.
+ProcessOrderTypeConversionRequest()
+ThreadTerminationHandler() 
+conversion checking to be done.
+
+===============================================================================================================================
+
+15.01.2015
+
+ConvertStructToByteArr() using case of 26.
+new report structure.. half done.
+
+===============================================================================================================================
+
+16.01.2015
+
+Orders & Trades Report in OTS.
+
+===============================================================================================================================
+
+19.01.2015
+
+TActivityLogReplyRecordNew()
+
+===============================================================================================================================
+
+20.01.2015
+
+Activity Log completeion & in order convert reply rec added trade id.
+
+===============================================================================================================================
+
+01.02.15 
+
+Live Ots change merging of 24.01.14 in Live version - 20.10.14.0
+
+For FUTIRC changes for Lot Qty.. NameLength issue in existing 6.. while this is of 9.
+ProcessActivityLog(), ProcessTradeReport(), ProcessOrderReport()
+
+Merging above change in Intra/Delivery OTS. Also FUTIRC used for Order Types. i.e 6 count of hastable extra from current live.
+
+FNO MTM Change using Junk1 field.
+ProcessActivityLog, ProcessOrderTypeActivityLog, ProcessMarginReport, ProcessOrderTypeTradeReport, ProcessTradeReport, ProcessOrderTypeOrdersReport, ProcessOrderReport
+
+==================================
+25.03.15
+-> new Case 51 added for Security Info call
+-> Added a new procedure "Proc_GetSecurityInfo" in KiFSDBNew Database to fetch the required fields from ScripMaster and Calling the same procedure from OTS
+============================
+26.03.26
+-> Added case value for SecurityInfo in Constants.OTS_SECURITY_INFO (Case 42)
+-> Added ProcessScripInfoReply(string ReplyStr) 
+-> Added case value for SecurityIndo in ConvertToProperReplyRec(ITInteractiveStructures.TOTSRequestRecord1 OTSReqRec)
+============================
+28.03.2015
+--------------Form1.cs--------------
+-> Add case in ConvertStructureToByteArr to send structure(By refering old cases)
+-> Adding case to convert Pointer To Structure (Request Structure) in "ReadBodyWithCase"
+-> Adding case in "ConvertToProperReplyRec" to convert structure to pointer
+-> -----------TOTSTheradForm.cs-----------
+-> Assignment of thread to get reply from database
+-> Addition of process "ProcessScripInfoReply" to pass value from database to structure
+-> Adding case to query "Exec Proc_GetSecurityInfo" to database
+--------------ThreadDB.cs-----------------
+-> To handle exception "0|Server is Busy"
+-> Checking length of reply from database to ensure the data is in correct format
+-> Execute procedure "Exec Proc_GetSecurityInfo"
+-> Adding function "ProcessScripInfoReply" to check and add into Structure
+-> Addition of Request and Reply structure in "ITInteractiveStr" for Request and Reply
+
+============================
+31.03.2015
+
+PadRight(12 & 17). Tested ok for derivatives.
+
+===============================================================================================================================
+
+23.04.15 
+
+Merging changes of => 20.03.15 - ProcessMarginReply() for 2 fields. This is ScripInfoReply changed OTS.
+ProcessMarginReport() change for Junk2 field
+
+===============================================================================================================================
+
+04.05.15 
+
+In modification & cancellation, sending ordertypes.
+
+===============================================================================================================================
+
+20.05.15 
+
+New Req - 170 for HoldingValuationReport - With BOD Var & Last Rate.
+Also, 3 fields in Security Info - Intra Delivery Var & 1 reserved.
+ScNameLength field issue solve.
+
+===============================================================================================================================
+
+21.05.15 
+
+ThreadTerminationHandler() for License part.
+Ini change. Startup load. enum for brokers.
+
+===============================================================================================================================
+01.07.2015
+
+Completed with user verification, addinf 2 structures for request as well as reply, addition of case 99
+cHANGES: 
+Addition of Constants.OTS_VERIFY_USER = 99
+Addition of case Constants.OTS_VERIFYUSER:da.Fill(dt);
+Addition of case Constants.OTS_VERIFYUSER:  Exec Proc_GetUserVerification
+Addition of function ProcessVerifyUserReply(string ReplyStr)	
+Addition of function ProcessVerifyUserReply()
+public ITInteractiveStructures.TVerifyUserReplyRecord VerifyUserReplyRec
+Addition of structure TVerifyUserRequestRecord  and TVerifyUserReplyRecord for request and reply
+version changed from 15.05.21.0 to 15.07.01.0
+
+===============================================================================================================================
+
+14.09.2015 Sanchit
+
+TScripDerivRecord - New structure for derivative change.
+
+==================================================================================================================================
+
+14.10.2015---Yashwant
+
+Added linece re,aining ays messge box 
+
+public form1()--added below code
+
+         Kernel32.GetEnvironmentVariable("WLRegDateDaysLeft", DateLeft, 100);//added on 14/10/2015 --Yashwant
+            Kernel32.GetEnvironmentVariable("WLRegDaysLeft", DaysLeft, 100);//added on 14/10/2015 --Yashwant
+            if (DaysLeft.ToString() != "" && DateLeft.ToString() != "")//added on 14/10/2015 --Yashwant
+            {
+                MessageBox.Show((Math.Max(int.Parse(DateLeft.ToString()), int.Parse(DaysLeft.ToString())).ToString() + " Days remaining before license expire"), "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+==================================================================================================================================
+
+20.10.2015 Sanchit
+
+WriteExToFile function for writing error in txt file. also converttoproperreplyrec for login reply case3.
+UDl file name change
+
+===============================================================================================================================
+26.11.2015 Pranoti
+UnableToProcessRequest()-> Adding cases for IntraDelivery
+
+==================================================================================================================================
+
+13.04.2016 Sanchit
+
+Exception Solving of Blank ReqStr in Case 130.
+Wrong Inputs given to MakeDerivDesc() In TOTSThread.cs: MakeCommandText() in case 115 & 130. Corrected that.
+WriteExToTxtFile() Added OTSReqRec structure for further details. WriteExToFile2 & ThreadTerminationHandler, sent parameter.
+ConvertToBytesForExFile() - Function for raw bytes.
+Added Pinnacle - GetBrokerName()
+
+==================================================================================================================================
+
+18.04.2016 Sanchit
+
+btn_DebugExRawFile_Click() - Reading logic for raw file added.
+Junk is one case & 2nd is incorrect Deriv Info. Needs to be observed first via TWS, then to be work for any logic if any in OTS.
+
+==================================================================================================================================
+
+26.04.2016 Sanchit
+
+SendPendingReplyFromList() 26 reply to be sent to all ITS.
+
+
+==================================================================================================================================
+
+06.05.2016 Hetal
+
+Dealer place order for client for currency segement through done changes in ProcessTraderList(DataTable dt) of TOTSThread.cs file
+
+==================================================================================================================================
+
+09.05.2016 Pranoti
+
+TOTSThread.cs -> ProcessTraderListNew()
+Adding Condition for AllowNseCurrDeriv
+
+==================================================================================================================================
+
+28.06.2016 Rohan
+
+Added 3 BrokerCodes (6, 7, 8) for Sunlight Broking, Swastika Investmart and Pure Broking respectively.
+==================================================================================================================================
+29.08.16 Prerna
+Adding Changes in AllowMcxDeriv and ChannelID_MD  TLoginReplyRecordNew,ProcessLoginReplyNew(string ReplyStr) of TOTSThread.cs
+==================================================================================================================================
+06.09.16 Prerna 
+Adding changes in ProcessLoginReplyNew(string ReplyStr)of  TOTSThread.cs and ProcessLoginReplyNew() of ThreadDB.
+
+==================================================================================================================================
+12.09.16 Rohan
+Added MTM changes in Form1.cs, ITInteractiveStructures.cs and TOTSThread.cs
+
+==================================================================================================================================
+
+13.10.2016 Pranoti
+
+SendPendingReplyFromList()-> check added for OTS_ORDERTYPE_PLACEORDEREQ,OTS_ORDERTYPE_MODIFYORDEREQ AND OTS_ORDERTYPE_CANCELORDEREQ
+
+==================================================================================================================================
+18.10.16 Prerna
+Mcx Trading Changes
+
+TOTSThread.cs
+Adding Changes in 
+MakeDerivDesc(char Exch, ITInteractiveStructures.TDerivInfoRecord DerivInfo),
+MakeDerivDescForOrderType(char Exch, byte CPType, int ExpiryDate, float StrikePrice, char[] Symbol, byte SymbolLength)
+
+Form1.cs
+GetReqTypeOnExch(char Exch, char ExchType, char OrderPlacement) adding case 101,102,103,
+ITInteractiveStructures.TOTSReplyRecord ConvertOrderTypeToNormalOrderForEC(ITInteractiveStructures.TOTSReplyRecord OTSReplyRec, int OrderPlacement) adding case 101,102,103,
+byte[] ConvertStructureToByteArr(ITInteractiveStructures.TAllReplyNewRecord ReplyToSend, byte ReplyType)adding case 101,102,103
+
+===============================================================================================
+17.11.2016 Rohan
+1) Code added for new Request Type 76, which will fetch all equity holdings of all clients.
+===============================================================================================
+19.01.17  Prerna
+McxTrading Merging:
+Form1.cs:
+ConvertOrderTypeToNormalOrderForEC(ITInteractiveStructures.TOTSReplyRecord OTSReplyRec, int OrderPlacement) adding case 101,102,103.
+Adding  Mcx exchange in case P,M,C GetReqTypeOnExch(char Exch, char ExchType, char OrderPlacement)
+ConvertStructureToByteArr(ITInteractiveStructures.TAllReplyNewRecord ReplyToSend, byte ReplyType)
+
+ThreadDB.cs
+Adding Mcx fileds ProcessLoginReplyNew()
+
+TOTSThread.cs
+Adding ExchMcxStartDate field
+Adding Mcx fileds ProcessLoginReplyNew()
+Adding  condition for Mcx Description MakeDerivDesc(char Exch, ITInteractiveStructures.TDerivInfoRecord DerivInfo),MakeDerivDescForOrderType(char Exch, byte CPType, int ExpiryDate, float StrikePrice, char[] Symbol, byte SymbolLength)
+MakeDerivDescForOrderType(char Exch, byte CPType, int ExpiryDate, float StrikePrice, char[] Symbol, byte SymbolLength)
+
+IInteractiveStructures.cs.
+Adding structure  TMCXGroupLevelHaltInfo_OTS 
+
+Derive Net Obligation changes
+IInteractiveStructures.cs.
+THoldingsReportReplyRecord_WithCollatralNew
+
+TOTSThread.cs
+Added new method  ProcessHoldingsReportWithCollatralNew(DataTable dt)
+Added case 94 in Execute() and MakeCommandText()
+
+Form1.cs
+Added case 94 in  ConvertStructureToByteArr(ITInteractiveStructures.TAllReplyNewRecord ReplyToSend, byte ReplyType)
+,ReadBodyWithCases(byte ReqType, byte[] buffToReadBody)
+Database changes 
+Added  new procedure Proc_HoldingsReportWithCollateralQtyNew
