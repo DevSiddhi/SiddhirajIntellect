@@ -230,6 +230,7 @@ namespace ConsoleApp1.Processes
                             }
                             catch (Exception) { }
                         }
+
                         //string createNseEquityMaster = checkCoCode.Checked ? "create table NseEquityMaster (Exch char, ScripCode int, Name varchar(12), Desc varchar(30), TradingSymbol varchar(30), TickSize int, Series varchar(2), MinimumLotQty int,ISIN varchar(20), CoCode money, SurveillanceFlag char , SurveillanceMsg varchar(120) ," +
                         //"UpperCkt money,LowerCkt money,PrevOpen money,PrevHigh money,PrevLow money,PrevClose money,PrevDayClose money,YearlyHigh money,YearlyLow money,YearlyHighDate int,YearlyLowDate int)" : "create table NseEquityMaster (Exch char, ScripCode int, Name varchar(12), Desc varchar(30), TradingSymbol varchar(30), TickSize int, Series varchar(2), MinimumLotQty int,ISIN varchar(20), GSMFlag int, SurveillanceFlag char , SurveillanceMsg varchar(120)," +
                         //"UpperCkt money,LowerCkt money,PrevOpen money,PrevHigh money,PrevLow money,PrevClose money,PrevDayClose money,YearlyHigh money,YearlyLow money,YearlyHighDate int,YearlyLowDate int)";
