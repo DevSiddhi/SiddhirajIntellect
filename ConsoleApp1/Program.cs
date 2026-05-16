@@ -1,5 +1,7 @@
 ﻿using ConsoleApp1.Helpers;
 using ConsoleApp1.Processes;
+using ConsoleApp1.Proto;
+using ConsoleApp1.QH;
 using System;
 
 namespace ConsoleApp1
@@ -8,26 +10,41 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
+            MainQH.StartUpQH();  //Starting of QH
             var segments = ConfigHelper.GetSegments();
-
             foreach (var segment in segments)
             {
                 switch (segment)
                 {
-                    //case "GroupsMembers":
+                    case "GroupsMembers":
 
-                    //    var process = new GroupsMembersProcess();
-                    //    var result = process.Execute();
-                    //    Console.WriteLine(result.message);
-                    //    break;
+                        var process = new GroupsMembersProcess();
+                        var result = process.Execute();
+                        Console.WriteLine(result.message);
+                        break;
                     case "NSESecurity":
-                        var nseProcess = new NseSecuritySegmentProcess();
-                        var nseResult = nseProcess.ExecuteNseSecurity();
-                        Console.WriteLine(nseResult.message);
+                        var nseEquityProcess = new NseSecuritySegmentProcess();
+                        var nseEquityResult = nseEquityProcess.ExecuteNseSecurity();
+                        Console.WriteLine(nseEquityResult.message);
+                        break;
+                    case "NSEDerivative":
+                        var nseDerivativeProcess = new NseDerivativeSegment();
+                        var nseDerivativeResult = nseDerivativeProcess.ExecuteNseDerivative();
+                        Console.WriteLine(nseDerivativeResult.message);
+                        break;
+                    case "BSEEquity":
+                        var bseEquitySegment = new BseEquitySegmentProcess();
+                        var bseEquityResult = bseEquitySegment.ExecuteBseScrip();
+                        Console.WriteLine(bseEquityResult.message);
+                        break;
+                    case "BSEDerivative":
+                        var bseDerivativeSegment = new BseDerivativeSegment();
+                        var bseDerivativeResult = bseDerivativeSegment.ExecuteBSEDeriv();
+                        Console.WriteLine(bseDerivativeResult.message);
                         break;
                 }
             }
-
+            
             Console.ReadLine();
         }
     }

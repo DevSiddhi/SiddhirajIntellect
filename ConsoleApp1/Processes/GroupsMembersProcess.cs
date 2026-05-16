@@ -215,12 +215,6 @@ namespace ConsoleApp1.Processes
             }
         }
 
-
-
-
-
-
-
         public StatusMessage LoadMember()
         {
             try

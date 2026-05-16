@@ -12,9 +12,17 @@ namespace ConsoleApp1.QH
 {
     public static class MainQH
     {
+        public static string protoFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "binaryMastersFiles");
         public static BrokerNameRecords BrokerCodeQH;
         static int exchcount = 9, maxthread = 15;
         public static ExchdataForQH[] ExchData = new ExchdataForQH[exchcount];
+        public static readonly DateTime ExchStartDate = new DateTime(1980, 1, 1);
+        public static string[] OFISType = new string[] { "", "FUTIDX", "OPTIDX", "FUTSTK", "OPTSTK", "FUTIVX", "FUTCUR", "OPTCUR", "UNDCUR", "FUTCOM", "OPTFUT", "FUTIRC", "FUTIRT",
+            "COMDTY", "OPTCOM" }, OFISTypeBSEFO = new string[] { "", "IF", "IO", "SF", "SO" },
+            CPType = new string[5] { "XX", "CA", "PA", "CE", "PE" }, BSEBhavCopyCPType = new string[5] { "", "CA", "PA", "CALL", "PUT" }, SeriesArray = new string[] { "BE", "EQ", "DR", "DE", "BZ", "SM", "IV", "ID",
+                "E1", "ST", "BL", "BT", "D1", "D2", "D3", "DR", "E2", "E3", "E4", "E5", "GC", "IL", "K1", "M1", "MF", "N1", "N2", "N3", "N4", "N5", "N6", "N7", "N8",
+                "N9", "NA", "NB", "NC", "ND", "NE", "NF", "NG", "NH", "NI", "NJ", "NK", "NL", "NM", "NN", "NO", "NP", "NQ", "NR", "NS", "NT", "NU", "O1", "O2", "O3",
+                "O4", "O5", "O9", "P1", "P2", "P3", "P4", "Q1", "Q2", "RL", "NO", "NP", "NQ", "NR", "NS", "NT", "NU" };
 
 
         public static T ReadUsingMarshalUnsafe<T>(byte[] data) where T : struct
@@ -36,6 +44,40 @@ namespace ConsoleApp1.QH
             Marshal.Copy(buffer, rawdatas, 0, rawsize);
             Marshal.FreeHGlobal(buffer);
             return rawdatas;
+        }
+
+        public static void StartUpQH()
+        {
+            try
+            {
+                string basePath = AppDomain.CurrentDomain.BaseDirectory;
+                string masterFile =
+                    Path.Combine(basePath, "Masters.mf");
+
+                string masterServerFile =
+                    Path.Combine(basePath, "MastersServer.mf");
+
+                if (File.Exists(masterFile))
+                    File.Delete(masterFile);
+
+                if (File.Exists(masterServerFile))
+                    File.Delete(masterServerFile);
+
+                Console.WriteLine("Old master files deleted.");
+
+
+                //Creation of ProtoFolder
+                if (!Directory.Exists(protoFolder))
+                {
+                    Directory.CreateDirectory(protoFolder);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                CommonFunctions.ErrorLog(ex);
+            }
         }
         public enum BrokerNameRecords //10.07.2015
         {

@@ -1,6 +1,7 @@
 ﻿using ConsoleApp1.Helpers;
 using ConsoleApp1.Models;
 using ConsoleApp1.Processes;
+using ConsoleApp1.QH;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -65,7 +66,7 @@ namespace ConsoleApp1.Helpers
             string FName = null, ExposureFile = null, callput = null, Str;
 
 
-            var Date = new DateTime(2026, 05, 12); //LastTradingDate.Value.Date;
+            var Date = new DateTime(2026, 05, 14); //LastTradingDate.Value.Date;
             var Format = "ddMMyy";
             FName = "NSE" + Date.ToString(Format) + ".Zip";
             SL.Add("ScripCode,Closing");
@@ -73,6 +74,7 @@ namespace ConsoleApp1.Helpers
             if (!File.Exists(FName))
             {
                 Str = FName + " is not available in current folder";
+                Console.WriteLine(Str);
                 CommonFunctions.WriteToLogFile(Str);
                 return;
             }
@@ -190,6 +192,60 @@ namespace ConsoleApp1.Helpers
                 }
             }
         }
+        public  static void readBhavCopy_FO(ScripData_Dict scripDataEQ_Dict, string FileName)
+        {
+            try
+            {
+                string format = "dd MMM yyyy";
+                string[] fileData = File.ReadAllLines(FileName);
+                for (int i = 1; i < fileData.Length; i++)//Skip First Line - Header
+                {
+                    try
+                    {
+                        string[] lineData = fileData[i].Split(',');
+
+                        string OFISType = lineData[4];
+                        int index = Array.IndexOf(MainQH.OFISType, OFISType);
+                        string Symbol = lineData[7];
+                        DateTime ExpiryDt = DateTime.ParseExact(lineData[9], "yyyy-MM-dd", null);
+                        float.TryParse(lineData[11], out var StrikePrice);
+                        string OptTp = lineData[12];
+                        int index2 = Array.IndexOf<string>(MainQH.CPType, OptTp);
+                        if (index2 > 0)
+                            Symbol = Symbol + " " + ExpiryDt.ToString(format) + " " + OptTp + " " + string.Format("{0:0.00}", StrikePrice);
+                        else
+                            Symbol = Symbol + " " + ExpiryDt.ToString(format);
+
+                        var scripRec = scripDataEQ_Dict.GetRecord(Symbol);
+                        if (scripRec == null)
+                        {
+                            scripRec = new ScripData
+                            {
+                                Name = Symbol
+                            };
+                            scripDataEQ_Dict.addEntry(scripRec);
+                        }
+
+                        scripRec.PrevOpen = Convert.ToDecimal(lineData[14]);
+                        scripRec.PrevHigh = Convert.ToDecimal(lineData[15]);
+                        scripRec.PrevLow = Convert.ToDecimal(lineData[16]);
+                        scripRec.PrevClose = Convert.ToDecimal(lineData[17]);
+                        scripRec.PrevOI = (int)Math.Min(int.MaxValue, Convert.ToDecimal(lineData[22]));
+                        scripRec.PrevDayClose = Convert.ToDecimal(lineData[19]);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
 
         public static void readBhavCopy_sme(ScripData_Dict scripDataEQ_Dict, string smeFileName) 
         {
@@ -254,7 +310,7 @@ namespace ConsoleApp1.Helpers
             try
             {
 
-                Date = new DateTime(2026, 05, 11); //this.LastTradingDate.Value;
+                Date = new DateTime(2026, 05, 14); //this.LastTradingDate.Value;
                 Format = "ddMMyyyy";
                 FName2 = "CM_52_wk_High_low.Csv";
                 if (File.Exists(FName2))
@@ -474,6 +530,63 @@ namespace ConsoleApp1.Helpers
             return list.ToArray();
         }
 
+        public static Dictionary<int, bseIndexData> readBhavCopy_BseIndices()
+        {
+            string FName = null, ExposureFile = null, callput = null, Str;
+            var Date = new DateTime(2026, 05, 14);
+            var Format = "ddMMyy";
+            FName = "QE" + Date.ToString(Format) + ".Zip";
+            SL.Add("ScripCode,Closing");
+
+            if (!File.Exists(FName))
+            {
+                Str = FName + " is not available in current folder";
+                Console.WriteLine(Str);
+                CommonFunctions.WriteToLogFile(Str);
+            }
+            else
+            {
+                EODZIPClass.UnZipFiles(FName, AppDomain.CurrentDomain.BaseDirectory); 
+            }
+
+            FName = "BI" + Date.ToString(Format) + ".Dbf";
+            var BIPath = AppDomain.CurrentDomain.BaseDirectory  + "\\" + FName;
+            Dictionary<int, bseIndexData> index = new Dictionary<int, bseIndexData>();
+            DataTable dt_BI = ParseDBF.ReadDBF(BIPath);
+            for (int k = 0; k < dt_BI.Rows.Count; k++)
+            {
+                int IndexCode = Convert.ToInt32(dt_BI.Rows[k]["INDEX_CODE"]);
+
+                if (IndexCode > 100)
+                {
+                    continue;
+                }
+                int ScripCode = 999900 + Convert.ToInt32(dt_BI.Rows[k]["INDEX_CODE"]);
+
+
+                var Symbol = Convert.ToString(dt_BI.Rows[k]["INDEX_NAME"]);
+                float Close = Convert.ToSingle(dt_BI.Rows[k]["CLOSING"]);
+                var Open = Convert.ToSingle(dt_BI.Rows[k]["OPENING"]);
+                var High = Convert.ToSingle(dt_BI.Rows[k]["HIGH"]);
+                var Low = Convert.ToSingle(dt_BI.Rows[k]["LOW"]);
+                var PrevClose = Convert.ToSingle(dt_BI.Rows[k]["LAST_DAY"]);
+
+                if (!index.ContainsKey(ScripCode))
+                {
+                    index.Add(ScripCode, new bseIndexData
+                    {
+                        PrevOpen = Convert.ToDecimal(Open),
+                        PrevHigh = Convert.ToDecimal(High),
+                        PrevLow = Convert.ToDecimal(Low),
+                        PrevClose = Convert.ToDecimal(Close),
+                        PrevDayClose = Convert.ToDecimal(PrevClose)
+                    });
+                }
+
+                SL.Add(ScripCode + "," + Close);
+            }
+            return index;
+        }
 
     }
 }

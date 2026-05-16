@@ -1,0 +1,33 @@
+﻿syntax = "proto3";
+
+package master;
+
+message EquityMasterEntry {
+
+    int32 scrip_code = 2;
+
+    string name = 3;    
+
+    string long_name = 4;
+
+    string series = 5;
+
+    int32 tick_size = 6;
+
+    int32 minimum_lot_qty = 7;
+
+    string isin = 8;
+
+    int64 upper_ckt = 9;
+
+    int64 lower_ckt = 10;
+
+    int64 prev_close = 14;
+}
+
+message NseEquityMaster {
+    repeated EquityMasterEntry entries = 1;
+}
+message BseEquityMaster {
+    repeated EquityMasterEntry entries = 1;
+}

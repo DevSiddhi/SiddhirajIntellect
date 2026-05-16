@@ -65,7 +65,26 @@ namespace ConsoleApp1.Models
         public string DisplayType { get; set; }
     }
 
-
+    struct bseFilesData
+    {
+        public decimal YearlyHigh;
+        public decimal YearlyLow;
+        public decimal UpperCkt;
+        public decimal LowerCkt;
+        public decimal PClose;
+        public int YearlyHighDate;
+        public int YearlyLowDate;
+        public string SurveillanceMsg;
+        public char SurveillanceFlag;
+    }
+    public struct bseIndexData
+    {
+        public decimal PrevOpen;
+        public decimal PrevHigh;
+        public decimal PrevLow;
+        public decimal PrevClose;
+        public decimal PrevDayClose;
+    }
     public class ScripData_Dict
     {
         public Dictionary<string, List<ScripData>> scripNameData = new Dictionary<string, List<ScripData>>();

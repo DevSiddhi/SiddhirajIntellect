@@ -1,0 +1,48 @@
+﻿syntax = "proto3";
+
+package master;
+
+message DerivativeMasterEntry
+{
+    int32 scrip_code = 1;
+
+    int32 ul_token = 2;
+
+    string name = 3;
+
+    string instrument_name = 4;
+
+    int32 expiry_date = 5;
+
+    int64 strike_price = 6;
+
+    int32 cp_type = 7;
+
+    int64 minimum_lot_qty = 8;
+
+    string desc = 9;
+
+    string trading_symbol = 10;
+
+    int32 tick_size = 11;
+
+    int64 upper_ckt = 12;
+
+    int64 lower_ckt = 13;
+
+    int64 prev_close = 14;
+
+    int64 prev_open_interest = 15;
+
+    int64 freeze_qty = 16;
+}
+
+message NseDerivativeMaster
+{
+    repeated DerivativeMasterEntry entries = 1;
+}
+
+message BseDerivativeMaster
+{
+    repeated DerivativeMasterEntry entries = 1;
+}
