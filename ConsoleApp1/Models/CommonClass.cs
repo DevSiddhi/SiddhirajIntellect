@@ -9,6 +9,15 @@ namespace ConsoleApp1.Models
         public bool status { get; set; } = true;
     }
 
+    public class Holidaydata 
+    {
+        public DateTime HolidayDate { get; set; }
+        public string ? Day_Name { get; set; }
+        public string ? Details { get; set; }
+        public int IsHoliday { get; set; }
+        public int SrNo { get; set; }
+    }
+
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public struct TGroupRecord
     {

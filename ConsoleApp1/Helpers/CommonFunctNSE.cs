@@ -66,7 +66,7 @@ namespace ConsoleApp1.Helpers
             string FName = null, ExposureFile = null, callput = null, Str;
 
 
-            var Date = new DateTime(2026, 05, 14); //LastTradingDate.Value.Date;
+            var Date = Convert.ToDateTime(MainQH.LastTradingDate); //LastTradingDate.Value.Date;
             var Format = "ddMMyy";
             FName = "NSE" + Date.ToString(Format) + ".Zip";
             SL.Add("ScripCode,Closing");
@@ -310,7 +310,7 @@ namespace ConsoleApp1.Helpers
             try
             {
 
-                Date = new DateTime(2026, 05, 14); //this.LastTradingDate.Value;
+                Date = Convert.ToDateTime(MainQH.LastTradingDate); //this.LastTradingDate.Value;
                 Format = "ddMMyyyy";
                 FName2 = "CM_52_wk_High_low.Csv";
                 if (File.Exists(FName2))
@@ -533,7 +533,7 @@ namespace ConsoleApp1.Helpers
         public static Dictionary<int, bseIndexData> readBhavCopy_BseIndices()
         {
             string FName = null, ExposureFile = null, callput = null, Str;
-            var Date = new DateTime(2026, 05, 14);
+            var Date = Convert.ToDateTime(MainQH.LastTradingDate);
             var Format = "ddMMyy";
             FName = "QE" + Date.ToString(Format) + ".Zip";
             SL.Add("ScripCode,Closing");

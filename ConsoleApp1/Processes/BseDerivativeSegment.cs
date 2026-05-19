@@ -40,7 +40,7 @@ namespace ConsoleApp1.Processes
         {
 
             string outputMessage = "";
-            var dt = new DateTime(2026, 05, 14);
+            var dt = Convert.ToDateTime(MainQH.LastTradingDate);
             string contractFileName = $"BSE_EQD_CONTRACT_{dt:ddMMyyyy}.csv";
             string BseFNOBhavCopyFileName = $"BhavCopy_BSE_FO_0_0_0_{dt:yyyyMMdd}_F_0000.csv"; 
                                                                                                
@@ -55,7 +55,8 @@ namespace ConsoleApp1.Processes
 
             try
             {
-                CommonFunctions.WriteToLogFile("Conv Bse Contract.txt button clicked");
+                CommonFunctions.WriteToLogFile("BSE Derivative master making process started");
+                Console.WriteLine("BSE derivative master creation processing.....");
                 List<string> contents = new List<string>();
                 List<DerivativeMasterEntry> protoRecords = new List<DerivativeMasterEntry>();
                 string format = "dd MMM yyyy";
@@ -324,17 +325,17 @@ namespace ConsoleApp1.Processes
                                                 Name = anything.Name,
                                                 InstrumentName = strArray2[2],
                                                 ExpiryDate = anything.ExpiryDate,
-                                                StrikePrice = Convert.ToInt64(anything.StrikePrice * 100),
+                                                StrikePrice = Convert.ToInt32(anything.StrikePrice * 100),
                                                 CpType = anything.CPType,
-                                                MinimumLotQty = anything.MinimumLotQuantity,
+                                                MinimumLotQty = Convert.ToInt32(anything.MinimumLotQuantity),
                                                 Desc = anything.Desc,
                                                 TradingSymbol = strArray2[9],
                                                 TickSize = Convert.ToInt32(strArrayFO[10]),
-                                                UpperCkt = Convert.ToInt64(Convert.ToDecimal(sqLiteParameterUpperCkt.Value) * 100),
-                                                LowerCkt = Convert.ToInt64(Convert.ToDecimal(sqLiteParameterLowerCkt.Value) * 100),
-                                                PrevClose = Convert.ToInt64(Convert.ToDecimal(sqLiteParameterPrevClose.Value) * 100),
-                                                PrevOpenInterest = Convert.ToInt64(sqLiteParameterPrevOI.Value),
-                                                FreezeQty = Convert.ToInt64(sqLiteParameterFreezeQty.Value)
+                                                UpperCkt = Convert.ToInt32(Convert.ToDecimal(sqLiteParameterUpperCkt.Value) * 100),
+                                                LowerCkt = Convert.ToInt32(Convert.ToDecimal(sqLiteParameterLowerCkt.Value) * 100),
+                                                PrevClose = Convert.ToInt32(Convert.ToDecimal(sqLiteParameterPrevClose.Value) * 100),
+                                                PrevOpenInterest = Convert.ToInt32(sqLiteParameterPrevOI.Value),
+                                                FreezeQty = Convert.ToInt32(sqLiteParameterFreezeQty.Value)
                                             };
 
                                             protoRecords.Add(protoEntry);
@@ -352,13 +353,13 @@ namespace ConsoleApp1.Processes
                     output.Close();
 
                     ProtoMasterWriter.CreateProtoMasterFile(protoRecords, Path.Combine(MainQH.protoFolder, "BseDerivativeMaster.bin"));
-                    var records = ProtoMasterReader.Read(Path.Combine(MainQH.protoFolder, "BseDerivativeMaster.bin"), DerivativeMasterEntry.Parser);
-                    Console.WriteLine(records.Count());
+                    //var records = ProtoMasterReader.Read(Path.Combine(MainQH.protoFolder, "BseDerivativeMaster.bin"), DerivativeMasterEntry.Parser);
+                    //Console.WriteLine(records.Count());
 
 
                     ((DbConnection)SQLiteHelper.Master_dbConnection).Close();
-                    CommonFunctions.WriteToLogFile("BseDerivMaster file created.");
-                    return new StatusMessage { message = "Bse Derivatives : " + contents.Count + " Records Processed", status = true };
+                    CommonFunctions.WriteToLogFile("BseDerivativeMaster file created.");
+                    return new StatusMessage { message = "BSE Derivatives : " + contents.Count + " Records Processed", status = true };
                 }
             }
             catch (Exception ex)
@@ -368,6 +369,7 @@ namespace ConsoleApp1.Processes
 
             }
         }
+
 
     }
 }

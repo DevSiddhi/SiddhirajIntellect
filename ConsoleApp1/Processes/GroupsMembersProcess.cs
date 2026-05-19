@@ -20,6 +20,7 @@ namespace ConsoleApp1.Processes
             try
             {
                 CommonFunctions.WriteToLogFile("GroupMembersExecute Started");
+                Console.WriteLine("GroupMembersExecute Started.....");
                 SQLiteHelper.OpenSqlite();
 
                 if (checkFile)

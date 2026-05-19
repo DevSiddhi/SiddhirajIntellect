@@ -16,6 +16,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ConsoleApp1.Processes
 {
@@ -45,7 +46,7 @@ namespace ConsoleApp1.Processes
         private StatusMessage ExecuteBseScrip_New(bool CheckFile = false)
         {
             string outputMessage = "";
-            var dt = new DateTime(2026, 05, 14);
+            var dt = Convert.ToDateTime(MainQH.LastTradingDate);
             string DPFile = $"DP{DateTime.Now:ddMMyy}";
             string REGFile = $"BSE_REG1_IND{dt:ddMMyy}.csv";
             string securityFileName = $"BSE_EQ_SCRIP_{dt:ddMMyyyy}.csv";
@@ -103,12 +104,12 @@ namespace ConsoleApp1.Processes
             }
             try
             {
-                CommonFunctions.WriteToLogFile("Bse equity master making process started");
-                Console.WriteLine("Bse equity master creation processing....");
+                CommonFunctions.WriteToLogFile("BSE equity master making process started");
+                Console.WriteLine("BSE equity master creation processing.....");
                 List<string> contents1 = new List<string>();
                 List<string> contents2 = new List<string>();
                 List<string> contents3 = new List<string>();
-                DateTime lastTradeDate = new DateTime(2026, 05, 14);
+                DateTime lastTradeDate = Convert.ToDateTime(MainQH.LastTradingDate);
                 //this.BSE_CIFILE = new Hashtable();
                 //string str1 = lastTradeDate.ToString("ddMMyy");
                 string str1 = lastTradeDate.ToString("ddMMyy");
@@ -402,9 +403,9 @@ namespace ConsoleApp1.Processes
                                     TickSize = Convert.ToInt32(scripMasterNewSeries.TickSize),
                                     MinimumLotQty = (int)scripMasterNewSeries.MinimumLotQty,
                                     Isin = "",
-                                    UpperCkt = Convert.ToInt64(Convert.ToDecimal(sqLiteParameterUpperCkt.Value) * 100),
-                                    LowerCkt = Convert.ToInt64(Convert.ToDecimal(sqLiteParameterLowerCkt.Value) * 100),
-                                    PrevClose = Convert.ToInt64(Convert.ToDecimal(sqLiteParameterPrevClose.Value) * 100)
+                                    UpperCkt = Convert.ToInt32(Convert.ToDecimal(sqLiteParameterUpperCkt.Value) * 100),
+                                    LowerCkt = Convert.ToInt32(Convert.ToDecimal(sqLiteParameterLowerCkt.Value) * 100),
+                                    PrevClose = Convert.ToInt32(Convert.ToDecimal(sqLiteParameterPrevClose.Value) * 100)
                                 };
 
                                 protoRecordsBSE.Add(entry);
@@ -623,7 +624,7 @@ namespace ConsoleApp1.Processes
                                             LongName = new string(scripMasterNewSeries.LongName).Substring(0, (int)scripMasterNewSeries.LongLength),
                                             Series = new string(scripMasterNewSeries.Series).Substring(0, (int)scripMasterNewSeries.SeriesLength),
                                             TickSize = Convert.ToInt32(scripMasterNewSeries.TickSize),
-                                            MinimumLotQty = (int)scripMasterNewSeries.MinimumLotQty,
+                                            MinimumLotQty = Convert.ToInt32(scripMasterNewSeries.MinimumLotQty),
                                             Isin = ISIN,
                                             UpperCkt = Convert.ToInt64(Convert.ToDecimal(sqLiteParameterUpperCkt.Value) * 100),
                                             LowerCkt = Convert.ToInt64(Convert.ToDecimal(sqLiteParameterLowerCkt.Value) * 100),
@@ -643,13 +644,10 @@ namespace ConsoleApp1.Processes
                     ((DbConnection)SQLiteHelper.Master_dbConnection).Close();
                     
                     ProtoMasterWriter.CreateProtoMasterFile(protoRecordsBSE, Path.Combine(MainQH.protoFolder, "BseEquityMaster.bin"));
-                    var records = ProtoMasterReader.Read(Path.Combine(MainQH.protoFolder, "BseEquityMaster.bin"), EquityMasterEntry.Parser);
-                    Console.WriteLine(records.Count());
+                    //var records = ProtoMasterReader.Read(Path.Combine(MainQH.protoFolder, "BseEquityMaster.bin"), EquityMasterEntry.Parser);
+                    //Console.WriteLine(records.Count());
 
-
-
-
-                    CommonFunctions.WriteToLogFile("BseEquityMasterNew created.");
+                    CommonFunctions.WriteToLogFile("BseEquityMaster created.");
                     string outMsg = "BseEquityMasterNew.csv - " + contents1.Count + " Records \r\n";
                     return new StatusMessage { message = "BSE Equity : " + contents1.Count + " Records Processed", status = true };
                 }

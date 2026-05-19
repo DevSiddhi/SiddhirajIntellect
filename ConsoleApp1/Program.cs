@@ -11,7 +11,7 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             MainQH.StartUpQH();  //Starting of QH
-            var segments = ConfigHelper.GetSegments();
+            var segments = ConfigHelper.GetEnabledSegments();
             foreach (var segment in segments)
             {
                 switch (segment)
@@ -22,22 +22,22 @@ namespace ConsoleApp1
                         var result = process.Execute();
                         Console.WriteLine(result.message);
                         break;
-                    case "NSESecurity":
+                    case "NseEquity":
                         var nseEquityProcess = new NseSecuritySegmentProcess();
                         var nseEquityResult = nseEquityProcess.ExecuteNseSecurity();
                         Console.WriteLine(nseEquityResult.message);
                         break;
-                    case "NSEDerivative":
+                    case "NseDerivative":
                         var nseDerivativeProcess = new NseDerivativeSegment();
                         var nseDerivativeResult = nseDerivativeProcess.ExecuteNseDerivative();
                         Console.WriteLine(nseDerivativeResult.message);
                         break;
-                    case "BSEEquity":
+                    case "BseEquity":
                         var bseEquitySegment = new BseEquitySegmentProcess();
                         var bseEquityResult = bseEquitySegment.ExecuteBseScrip();
                         Console.WriteLine(bseEquityResult.message);
                         break;
-                    case "BSEDerivative":
+                    case "BseDerivative":
                         var bseDerivativeSegment = new BseDerivativeSegment();
                         var bseDerivativeResult = bseDerivativeSegment.ExecuteBSEDeriv();
                         Console.WriteLine(bseDerivativeResult.message);

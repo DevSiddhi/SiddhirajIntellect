@@ -14,11 +14,11 @@ message DerivativeMasterEntry
 
     int32 expiry_date = 5;
 
-    int64 strike_price = 6;
+    int32 strike_price = 6;
 
     int32 cp_type = 7;
 
-    int64 minimum_lot_qty = 8;
+    int32 minimum_lot_qty = 8;
 
     string desc = 9;
 
@@ -26,15 +26,15 @@ message DerivativeMasterEntry
 
     int32 tick_size = 11;
 
-    int64 upper_ckt = 12;
+    int32 upper_ckt = 12;
 
-    int64 lower_ckt = 13;
+    int32 lower_ckt = 13;
 
-    int64 prev_close = 14;
+    int32 prev_close = 14; 
 
-    int64 prev_open_interest = 15;
+    int32 prev_open_interest = 15;
 
-    int64 freeze_qty = 16;
+    int32 freeze_qty = 16;
 }
 
 message NseDerivativeMaster

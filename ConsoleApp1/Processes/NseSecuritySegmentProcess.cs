@@ -47,7 +47,7 @@ namespace ConsoleApp1.Processes
             int RecCount = 0;
             List<EquityMasterEntry> protoRecords = new();
             string outputMessage = "";
-            DateTime Date = new DateTime(2026, 05, 14);
+            DateTime Date = Convert.ToDateTime(MainQH.LastTradingDate);
 
             string securityFileName = $"NSE_CM_security_{Date:ddMMyyyy}.csv";
             string NseCMBhavCopyFileName = $"BhavCopy_NSE_CM_0_0_0_{Date:yyyyMMdd}_F_0000.csv";
@@ -110,7 +110,7 @@ namespace ConsoleApp1.Processes
             try
             {
                 CommonFunctions.WriteToLogFile("NSE equity master making process started");
-                Console.WriteLine("NSE equity master creation processing");
+                Console.WriteLine("NSE equity master creation processing.....");
                 //if (this.ProcessStatus())
                 //    return new StatusMessage { message = "Startup Pending", status = false };
                 List<string> contents1 = new List<string>();
@@ -428,7 +428,7 @@ namespace ConsoleApp1.Processes
                                     Isin = "",
                                     UpperCkt = 0,
                                     LowerCkt = 0,
-                                    PrevClose = Convert.ToInt64(Convert.ToDecimal(sqLiteParameterPrevClose.Value) * 100)
+                                    PrevClose = Convert.ToInt32(Convert.ToDecimal(sqLiteParameterPrevClose.Value) * 100)
                                 };
 
                                 protoRecords.Add(protoEntry);
@@ -686,10 +686,12 @@ namespace ConsoleApp1.Processes
                     fileStream.Close();
 
                     ProtoMasterWriter.CreateProtoMasterFile(protoRecords, Path.Combine(MainQH.protoFolder, "NseEquityMaster.bin"));
+
                     var records = ProtoMasterReader.Read(Path.Combine(MainQH.protoFolder, "NseEquityMaster.bin"), EquityMasterEntry.Parser);
-                    Console.WriteLine(records.Count());
-                    CommonFunctions.WriteToLogFile("NseEquityMasterNew file created");
-                    return new StatusMessage { message = "Nse Security : " + contents1.Count + " Records Processed", status = true };
+                    //Console.WriteLine(records.Count());
+                    
+                    CommonFunctions.WriteToLogFile("NseEquityMaster file created");
+                    return new StatusMessage { message = "NSE Equity : " + contents1.Count + " Records Processed", status = true };
                 }
 
             }

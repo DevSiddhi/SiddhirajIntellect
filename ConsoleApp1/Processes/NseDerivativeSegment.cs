@@ -36,7 +36,7 @@ namespace ConsoleApp1.Processes
         private StatusMessage ExecuteContract_new(bool CheckFile = false)
         {
             string outputMessage = "";
-            DateTime Date = new DateTime(2026, 05, 14);
+            DateTime Date = Convert.ToDateTime(MainQH.LastTradingDate);
             string contractFileName = $"NSE_FO_contract_{Date:ddMMyyyy}.csv";
             string NseFNOBhavCopyFileName = $"BhavCopy_NSE_FO_0_0_0_{Date:yyyyMMdd}_F_0000.csv";
             if (CheckFile)
@@ -304,17 +304,17 @@ namespace ConsoleApp1.Processes
                                                 Name = anything.Name,
                                                 InstrumentName = strArray2[2],
                                                 ExpiryDate = anything.ExpiryDate,
-                                                StrikePrice = Convert.ToInt64(Convert.ToDecimal(anything.StrikePrice) * 100),
+                                                StrikePrice = Convert.ToInt32(Convert.ToDecimal(anything.StrikePrice) * 100),
                                                 CpType = anything.CPType,
-                                                MinimumLotQty = anything.MinimumLotQuantity,
+                                                MinimumLotQty = Convert.ToInt32(anything.MinimumLotQuantity),
                                                 Desc = anything.Desc,
                                                 TradingSymbol = strArray2[9],
                                                 TickSize = TickSize,
-                                                UpperCkt = Convert.ToInt64(Convert.ToDecimal(UpperCkt) * 100),
-                                                LowerCkt = Convert.ToInt64(Convert.ToDecimal(LowerCkt) * 100),
-                                                PrevClose = Convert.ToInt64(Convert.ToDecimal(sqLiteParameterPrevClose.Value) * 100),
-                                                PrevOpenInterest = Convert.ToInt64(sqLiteParameterPrevOI.Value),
-                                                FreezeQty = Convert.ToInt64(sqLiteParameterFreezeQty.Value)
+                                                UpperCkt = Convert.ToInt32(Convert.ToDecimal(UpperCkt) * 100),
+                                                LowerCkt = Convert.ToInt32(Convert.ToDecimal(LowerCkt) * 100),
+                                                PrevClose = Convert.ToInt32(Convert.ToDecimal(sqLiteParameterPrevClose.Value) * 100),
+                                                PrevOpenInterest = Convert.ToInt32(sqLiteParameterPrevOI.Value),
+                                                FreezeQty = Convert.ToInt32(sqLiteParameterFreezeQty.Value)
                                             };
 
                                             protoRecords.Add(protoEntry);
@@ -333,9 +333,10 @@ namespace ConsoleApp1.Processes
                     output.Close();
 
                     ProtoMasterWriter.CreateProtoMasterFile(protoRecords, Path.Combine(MainQH.protoFolder, "NseDerivativeMaster.bin"));
-                    var records = ProtoMasterReader.Read(Path.Combine(MainQH.protoFolder, "NseDerivativeMaster.bin"), DerivativeMasterEntry.Parser);
-                    Console.WriteLine(records.Count());
-                    CommonFunctions.WriteToLogFile("NseDerivMaster file created.");
+                    //var records = ProtoMasterReader.Read(Path.Combine(MainQH.protoFolder, "NseDerivativeMaster.bin"), DerivativeMasterEntry.Parser);
+                    //Console.WriteLine(records.Count());
+
+                    CommonFunctions.WriteToLogFile("NseDerivativeMaster file created.");
                     return new StatusMessage { message = "NSE Derivatives : " + contents.Count + " Records Processed", status = true };
                 }
             }

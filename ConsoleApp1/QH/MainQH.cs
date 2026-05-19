@@ -1,7 +1,10 @@
 ﻿using ConsoleApp1.Helpers;
+using ConsoleApp1.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +16,8 @@ namespace ConsoleApp1.QH
     public static class MainQH
     {
         public static string protoFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "binaryMastersFiles");
+        public static DateTime LastTradingDate { get; set; }
+
         public static BrokerNameRecords BrokerCodeQH;
         static int exchcount = 9, maxthread = 15;
         public static ExchdataForQH[] ExchData = new ExchdataForQH[exchcount];
@@ -50,6 +55,8 @@ namespace ConsoleApp1.QH
         {
             try
             {
+                CommonFunctions.WriteToLogFile("Starting up QH.....");
+                Console.WriteLine("Starting up QH.....");
                 string basePath = AppDomain.CurrentDomain.BaseDirectory;
                 string masterFile =
                     Path.Combine(basePath, "Masters.mf");
@@ -65,12 +72,19 @@ namespace ConsoleApp1.QH
 
                 Console.WriteLine("Old master files deleted.");
 
-
                 //Creation of ProtoFolder
                 if (!Directory.Exists(protoFolder))
                 {
                     Directory.CreateDirectory(protoFolder);
                 }
+
+                LastTradingDate =  getLastTradingDateFromCsv();  //getting last trading date from Holiday.csv file
+                if (LastTradingDate == DateTime.MinValue)
+                {
+                    throw new InvalidOperationException("Unable to determine last trading date from Holiday.csv");
+                }
+
+                Console.WriteLine($"Last Trading date is : {LastTradingDate:dd-MM-yyyy}");
 
             }
             catch (Exception ex)
@@ -79,6 +93,67 @@ namespace ConsoleApp1.QH
                 CommonFunctions.ErrorLog(ex);
             }
         }
+
+        public static DateTime getLastTradingDateFromCsv()
+        {
+            try
+            {
+                string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Holiday.csv");
+                if (!File.Exists(filePath))
+                {
+                    throw new FileNotFoundException("Holiday.csv file not found at path: " + filePath);
+                }
+                string[] lines = File.ReadAllLines(filePath);
+               // List<Holidaydata> holidayDataList = new List<Holidaydata>();
+                Dictionary<DateTime, int> holidayDictionary = new Dictionary<DateTime, int>();
+
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    string line = lines[i];
+                    string[] columns = line.Split(',');
+                    Holidaydata data = new Holidaydata();
+                    data.HolidayDate = DateTime.ParseExact(columns[0], "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                    data.Day_Name = columns[1];
+                    data.Details = columns[2];
+                    data.IsHoliday = int.Parse(columns[3]);
+                    data.SrNo = int.Parse(columns[4]);
+                    if (!holidayDictionary.ContainsKey(data.HolidayDate.Date)) 
+                    {
+                        holidayDictionary[data.HolidayDate.Date] = data.IsHoliday;
+                    }
+                    else 
+                    {
+                        Console.WriteLine($"Duplicate date found in Holiday.csv: {data.HolidayDate:dd-MM-yyyy}.");
+                        return DateTime.MinValue;
+                    }
+                   // holidayDataList.Add(data);
+                }
+
+                DateTime checkdate = DateTime.Today.AddDays(-1);
+                while (true)
+                {
+                    if (holidayDictionary.ContainsKey(checkdate.Date))
+                    {
+                        if (holidayDictionary[checkdate.Date] == 0)
+                        {
+                            break;
+                        }
+                    }
+                    checkdate = checkdate.AddDays(-1);
+                }
+                return checkdate.Date;
+
+            }
+            catch (Exception ex) 
+            { 
+                Console.WriteLine(ex.Message);
+                CommonFunctions.ErrorLog(ex);
+                return DateTime.MinValue;
+            }
+            
+            
+        }
+
         public enum BrokerNameRecords //10.07.2015
         {
             BROKER_VENTURA = 0, BROKER_IN_NIVESH = 1, BROKER_KIFS = 2, BROKER_LKP = 3, BROKER_MONARCH_NETWORTH = 4,
