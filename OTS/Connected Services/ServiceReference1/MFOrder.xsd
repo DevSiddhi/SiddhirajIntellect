@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/MFOrderService" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/MFOrderService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="OrderData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AllRedeem" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BuySell" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BuySellType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ClientCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DPC" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DPTxn" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EUIN" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EUINVal" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FolioNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IPAdd" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="KYCStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MemberId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MinRedeem" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OrderId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OrderVal" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Param1" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Param2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Param3" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PassKey" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Qty" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RefNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Remarks" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SchemeCd" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SubBrCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TransCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TransNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OrderData" nillable="true" type="tns:OrderData" />
+  <xs:complexType name="SpreadOrder">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AllUnitFlag" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BuySell" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BuySellType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ClientCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DPC" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DPTxn" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EUIN" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EUINVal" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FolioNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IPAdd" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="KYCStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MemberId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MinRedeem" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OrderId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OrderVal" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Param1" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Param2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Param3" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PassKey" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RedeemDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RedemptionAmt" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RefNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Remarks" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SchemeCd" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SubBrCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TransCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TransNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SpreadOrder" nillable="true" type="tns:SpreadOrder" />
+  <xs:complexType name="SwitchOrder">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AllUnitFlag" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BuySell" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BuySellType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ClientCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DPTxn" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EUIN" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EUINVal" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FolioNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FromSchemeCd" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IPAdd" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="KYCStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MemberId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MinRedeem" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OrderId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OrderVal" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Param1" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Param2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Param3" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PassKey" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Remarks" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SubBrCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SwitchUnits" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ToSchemeCd" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TransCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TransNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SwitchOrder" nillable="true" type="tns:SwitchOrder" />
+  <xs:complexType name="SipOrder">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ClientCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DPC" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DPTxnMode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Euin" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EuinVal" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FirstOrderFlag" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FolioNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FrequencyAllowed" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FrequencyType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IPAdd" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InstallmentAmount" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InternalRefNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MemberCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NoOfInstallments" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Param1" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Param2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Param3" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PassKey" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RegId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Remarks" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SchemeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StartDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SubberCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TransMode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TransactionCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UniqueRefNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SipOrder" nillable="true" type="tns:SipOrder" />
+  <xs:complexType name="XsipOrder">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Brokerage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ClientCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DPC" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DpTxnMode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Euin" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EuinVal" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FirstOrderFlag" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FolioNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FrequencyAllowed" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FrequencyType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IPAdd" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InstallmentAmount" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InternalRefNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MandateID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MemberCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NoOfInstallment" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Param1" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Param2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Param3" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PassKey" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Remarks" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SchemeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StartDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SubberCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TransMode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TransactionCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UniqueRefNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="XsipRegID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="XsipOrder" nillable="true" type="tns:XsipOrder" />
+</xs:schema>
