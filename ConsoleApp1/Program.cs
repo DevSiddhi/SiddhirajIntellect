@@ -1,4 +1,8 @@
-﻿using ConsoleApp1.Helpers;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using ConsoleApp1.BhavCopy;
+using ConsoleApp1.Helpers;
 using ConsoleApp1.Processes;
 using ConsoleApp1.Proto;
 using ConsoleApp1.QH;
@@ -10,6 +14,17 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
+            var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddControllers();
+
+            var app = builder.Build();
+
+            app.MapControllers();
+
+            // Run API in background
+            var apiTask = app.RunAsync("http://localhost:5000");
+
             MainQH.StartUpQH();  //Starting of QH
             var segments = ConfigHelper.GetEnabledSegments();
             foreach (var segment in segments)
@@ -26,11 +41,17 @@ namespace ConsoleApp1
                         var nseEquityProcess = new NseSecuritySegmentProcess();
                         var nseEquityResult = nseEquityProcess.ExecuteNseSecurity();
                         Console.WriteLine(nseEquityResult.message);
+                        //var nseEquityBhavCopy = new NSECashBhavCopy();
+                        //var nseEquityBhavCopyResult = nseEquityBhavCopy.NseEquityBhavCopyExecution();
+                        //Console.WriteLine(nseEquityBhavCopyResult.message);
                         break;
                     case "NseDerivative":
                         var nseDerivativeProcess = new NseDerivativeSegment();
                         var nseDerivativeResult = nseDerivativeProcess.ExecuteNseDerivative();
                         Console.WriteLine(nseDerivativeResult.message);
+                        //var nseDerivativeBhavCopy = new NSEDerivBhavCopy();
+                        //var nseDerivativeBhavCopyResult = nseDerivativeBhavCopy.NseDerivBhavCopyExecution();
+                        //Console.WriteLine(nseDerivativeBhavCopyResult.message);
                         break;
                     case "BseEquity":
                         var bseEquitySegment = new BseEquitySegmentProcess();

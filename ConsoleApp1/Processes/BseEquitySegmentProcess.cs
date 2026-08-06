@@ -43,6 +43,7 @@ namespace ConsoleApp1.Processes
             } 
             return res;
         }
+
         private StatusMessage ExecuteBseScrip_New(bool CheckFile = false)
         {
             string outputMessage = "";
@@ -67,6 +68,7 @@ namespace ConsoleApp1.Processes
                 if (!File.Exists("Bse_DoNotAllowTrading.txt")) outputMessage += "Bse_DoNotAllowTrading.txt,";
                 return new StatusMessage { message = outputMessage };
             }
+
 
             if (ConfigHelper.CoCode) //checkCoCode.Checked
             {
@@ -102,6 +104,8 @@ namespace ConsoleApp1.Processes
                     }
                 }
             }
+
+
             try
             {
                 CommonFunctions.WriteToLogFile("BSE equity master making process started");
@@ -224,8 +228,8 @@ namespace ConsoleApp1.Processes
 
 
                     string createBseEquityMaster = ConfigHelper.CoCode
-                        ? "create table BseEquityMaster ( Exch char, ScripCode int, Name varchar(12), Desc varchar(30),TradingSymbol varchar(30), TickSize byte, Series varchar(2), MinimumLotQty int,ISIN varchar(20), CoCode money, SurveillanceFlag char , SurveillanceMsg varchar(120),Partition varchar(15), UpperCkt money,LowerCkt money,PrevOpen money,PrevHigh money,PrevLow money,PrevClose money,PrevDayClose money,YearlyHigh money,YearlyLow money,YearlyHighDate int,YearlyLowDate int)"
-                        : "create table BseEquityMaster ( Exch char, ScripCode int, Name varchar(12), Desc varchar(30),TradingSymbol varchar(30), TickSize byte, Series varchar(2), MinimumLotQty int,ISIN varchar(20),  SurveillanceFlag char , SurveillanceMsg varchar(120),Partition varchar(15), UpperCkt money,LowerCkt money,PrevOpen money,PrevHigh money,PrevLow money,PrevClose money,PrevDayClose money,YearlyHigh money,YearlyLow money,YearlyHighDate int,YearlyLowDate int)";
+                        ? "create table BseEquityMaster ( Exch char, ScripCode int, Name varchar(12), Desc varchar(30),TradingSymbol varchar(30), TickSize byte, Series varchar(2), MinimumLotQty int,ISIN varchar(20), CoCode money, SurveillanceFlag char , SurveillanceMsg varchar(120),IsCAS char,Partition varchar(15), UpperCkt money,LowerCkt money,PrevOpen money,PrevHigh money,PrevLow money,PrevClose money,PrevDayClose money,YearlyHigh money,YearlyLow money,YearlyHighDate int,YearlyLowDate int)"
+                        : "create table BseEquityMaster ( Exch char, ScripCode int, Name varchar(12), Desc varchar(30),TradingSymbol varchar(30), TickSize byte, Series varchar(2), MinimumLotQty int,ISIN varchar(20),  SurveillanceFlag char , SurveillanceMsg varchar(120),IsCAS char,Partition varchar(15), UpperCkt money,LowerCkt money,PrevOpen money,PrevHigh money,PrevLow money,PrevClose money,PrevDayClose money,YearlyHigh money,YearlyLow money,YearlyHighDate int,YearlyLowDate int)";
 
                     using (SQLiteCommand sqLiteCommand = new SQLiteCommand(createBseEquityMaster, SQLiteHelper.Master_dbConnection))
 
@@ -265,6 +269,7 @@ namespace ConsoleApp1.Processes
                             }
                             SQLiteParameter sqLiteParameterSurveillanceFlag = new SQLiteParameter("@SurveillanceFlag", DbType.String);
                             SQLiteParameter sqLiteParameterSurveillanceMsg = new SQLiteParameter("@SurveillanceMsg", DbType.String);
+                            SQLiteParameter sqLiteParameterIsCAS = new SQLiteParameter("@IsCAS", DbType.String);
                             SQLiteParameter sqLiteParameterPartition = new SQLiteParameter("@Partition", DbType.String);
                             SQLiteParameter sqLiteParameterUpperCkt = new SQLiteParameter("@UpperCkt", DbType.Currency);
                             SQLiteParameter sqLiteParameterLowerCkt = new SQLiteParameter("@LowerCkt", DbType.Currency);
@@ -279,8 +284,8 @@ namespace ConsoleApp1.Processes
                             SQLiteParameter sqLiteParameterYearlyLowDate = new SQLiteParameter("@YearlyLowDate", DbType.Currency);
 
                             string insertQuery = ConfigHelper.CoCode
-                                ? "INSERT INTO BseEquityMaster (Exch, ScripCode, Name, Desc,TradingSymbol, TickSize, Series, MinimumLotQty, ISIN,CoCode,  SurveillanceFlag,SurveillanceMsg, Partition, UpperCkt ,LowerCkt ,PrevOpen ,PrevHigh ,PrevLow ,PrevClose,PrevDayClose ,YearlyHigh ,YearlyLow ,YearlyHighDate,YearlyLowDate) VALUES (@Exchange,@ExchangeCode,@ScripName,@LongName,@TradingSymbol,@TickSize,@Series,@MinimumLotQty,@ISIN,@CoCode,@SurveillanceFlag,@SurveillanceMsg,@Partition,@UpperCkt ,@LowerCkt ,@PrevOpen ,@PrevHigh ,@PrevLow ,@PrevClose,@PrevDayClose ,@YearlyHigh ,@YearlyLow ,@YearlyHighDate ,@YearlyLowDate)"
-                                : "INSERT INTO BseEquityMaster (Exch, ScripCode, Name, Desc,TradingSymbol, TickSize, Series, MinimumLotQty, ISIN, SurveillanceFlag,SurveillanceMsg, Partition, UpperCkt ,LowerCkt ,PrevOpen ,PrevHigh ,PrevLow ,PrevClose,PrevDayClose ,YearlyHigh ,YearlyLow ,YearlyHighDate,YearlyLowDate) VALUES (@Exchange,@ExchangeCode,@ScripName,@LongName,@TradingSymbol,@TickSize,@Series,@MinimumLotQty,@ISIN,@SurveillanceFlag,@SurveillanceMsg,@Partition,@UpperCkt ,@LowerCkt ,@PrevOpen ,@PrevHigh ,@PrevLow ,@PrevClose,@PrevDayClose ,@YearlyHigh ,@YearlyLow ,@YearlyHighDate ,@YearlyLowDate)";
+                                ? "INSERT INTO BseEquityMaster (Exch, ScripCode, Name, Desc,TradingSymbol, TickSize, Series, MinimumLotQty, ISIN,CoCode,  SurveillanceFlag,SurveillanceMsg,IsCAS, Partition, UpperCkt ,LowerCkt ,PrevOpen ,PrevHigh ,PrevLow ,PrevClose,PrevDayClose ,YearlyHigh ,YearlyLow ,YearlyHighDate,YearlyLowDate) VALUES (@Exchange,@ExchangeCode,@ScripName,@LongName,@TradingSymbol,@TickSize,@Series,@MinimumLotQty,@ISIN,@CoCode,@SurveillanceFlag,@SurveillanceMsg,@IsCAS,@Partition,@UpperCkt ,@LowerCkt ,@PrevOpen ,@PrevHigh ,@PrevLow ,@PrevClose,@PrevDayClose ,@YearlyHigh ,@YearlyLow ,@YearlyHighDate ,@YearlyLowDate)"
+                                : "INSERT INTO BseEquityMaster (Exch, ScripCode, Name, Desc,TradingSymbol, TickSize, Series, MinimumLotQty, ISIN, SurveillanceFlag,SurveillanceMsg,IsCAS, Partition, UpperCkt ,LowerCkt ,PrevOpen ,PrevHigh ,PrevLow ,PrevClose,PrevDayClose ,YearlyHigh ,YearlyLow ,YearlyHighDate,YearlyLowDate) VALUES (@Exchange,@ExchangeCode,@ScripName,@LongName,@TradingSymbol,@TickSize,@Series,@MinimumLotQty,@ISIN,@SurveillanceFlag,@SurveillanceMsg,@IsCAS,@Partition,@UpperCkt ,@LowerCkt ,@PrevOpen ,@PrevHigh ,@PrevLow ,@PrevClose,@PrevDayClose ,@YearlyHigh ,@YearlyLow ,@YearlyHighDate ,@YearlyLowDate)";
 
 
                             ((DbCommand)sqLiteCommand).CommandText = insertQuery;
@@ -295,6 +300,7 @@ namespace ConsoleApp1.Processes
                             sqLiteCommand.Parameters.Add(sqLiteParameter8);
                             sqLiteCommand.Parameters.Add(sqLiteParameterSurveillanceFlag);
                             sqLiteCommand.Parameters.Add(sqLiteParameterSurveillanceMsg);
+                            sqLiteCommand.Parameters.Add(sqLiteParameterIsCAS);
                             sqLiteCommand.Parameters.Add(sqLiteParameterPartition);
                             sqLiteCommand.Parameters.Add(sqLiteParameterISIN);
                             if (ConfigHelper.CoCode) sqLiteCommand.Parameters.Add(sqLiteParameterCoCode);
@@ -360,6 +366,8 @@ namespace ConsoleApp1.Processes
                                 if (ConfigHelper.CoCode) sqLiteParameterCoCode.Value = 0;
                                 sqLiteParameterISIN.Value = "";
                                 sqLiteParameterPartition.Value = "";
+                                sqLiteParameterIsCAS.Value = 'N';
+
                                 if (IndexDict.TryGetValue(scripMasterNewSeries.ExchangeCode, out var ScrData))
                                 {
                                     sqLiteParameterUpperCkt.Value = 0;
@@ -476,6 +484,12 @@ namespace ConsoleApp1.Processes
                                     }
                                     if (flag)
                                         ch3 = 'N';
+
+                                    if (strArrayBSE[23] == "1")
+                                        sqLiteParameterIsCAS.Value = 'Y';
+                                    else
+                                        sqLiteParameterIsCAS.Value = 'N';
+
                                     scripMasterNewSeries.ExchangeCode = int32_1;
                                     scripMasterNewSeries.ScripName = str8.PadRight(12).ToCharArray();
                                     scripMasterNewSeries.NameLength = (byte)str8.Length;

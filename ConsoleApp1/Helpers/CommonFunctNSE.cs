@@ -33,12 +33,17 @@ namespace ConsoleApp1.Helpers
                 try
                 {
                     if (!string.IsNullOrEmpty(ConfigHelper.CompanyMasterToken))
+                    
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ConfigHelper.CompanyMasterToken);
+                    
                     HttpResponseMessage response = await client.GetAsync(ConfigHelper.CompanyMasterUrl);
+                    
                     if (!response.IsSuccessStatusCode) return;
                     string responseBody = await response.Content.ReadAsStringAsync();
                     if (responseBody == null || responseBody == "") return;
+                    
                     CompanyMasterReply? companyMasterReply = JsonConvert.DeserializeObject<CompanyMasterReply>(responseBody);
+                    
                     DateTime dt = DateTime.Now;
                     string coCodeFileName = $"co_code.csv";
 
