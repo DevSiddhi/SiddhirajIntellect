@@ -45,7 +45,7 @@ namespace ConsoleApp1.Helpers
                     CompanyMasterReply? companyMasterReply = JsonConvert.DeserializeObject<CompanyMasterReply>(responseBody);
                     
                     DateTime dt = DateTime.Now;
-                    string coCodeFileName = $"co_code.csv";
+                    string coCodeFileName = Path.Combine(MainQH.MasterFolder, $"co_code.csv");
 
                     List<string> csvData = new List<string>
                     {
@@ -73,7 +73,7 @@ namespace ConsoleApp1.Helpers
 
             var Date = Convert.ToDateTime(MainQH.LastTradingDate); //LastTradingDate.Value.Date;
             var Format = "ddMMyy";
-            FName = "NSE" + Date.ToString(Format) + ".Zip";
+            FName = Path.Combine(MainQH.MasterFolder, "NSE" + Date.ToString(Format) + ".Zip");
             SL.Add("ScripCode,Closing");
 
             if (!File.Exists(FName))
@@ -85,7 +85,7 @@ namespace ConsoleApp1.Helpers
             }
             else
             {
-                try { EODZIPClass.UnZipFiles(FName, AppDomain.CurrentDomain.BaseDirectory); }
+                try { EODZIPClass.UnZipFiles(FName, MainQH.MasterFolder); }
                 catch (Exception ex)
                 {
                     Str = "Error Extracting " + FName + ".Exception : " + ex.Message;
@@ -97,7 +97,7 @@ namespace ConsoleApp1.Helpers
             }
             var FormatPd = "ddMMyyyy";
             FName = "PD" + Date.ToString(FormatPd) + ".Csv";
-            var PDPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + FName;
+            var PDPath = Path.Combine(MainQH.MasterFolder, FName);
             if (!File.Exists(PDPath))
             {
                 Str = FName + " is not available in current folder";
@@ -317,7 +317,7 @@ namespace ConsoleApp1.Helpers
 
                 Date = Convert.ToDateTime(MainQH.LastTradingDate); //this.LastTradingDate.Value;
                 Format = "ddMMyyyy";
-                FName2 = "CM_52_wk_High_low.Csv";
+                FName2 = Path.Combine(MainQH.MasterFolder, "CM_52_wk_High_low.Csv");
                 if (File.Exists(FName2))
                 {
                     var enumerable = File.ReadLines(FName2);
@@ -331,7 +331,7 @@ namespace ConsoleApp1.Helpers
                     }
 
                 }
-                FName2 = "CM_52_wk_High_low_" + DateTime.Today.ToString(Format) + ".Csv";
+                FName2 = Path.Combine(MainQH.MasterFolder, "CM_52_wk_High_low_" + DateTime.Today.ToString(Format) + ".Csv");
                 if (File.Exists(FName2))
                 {
                     var enumerable = File.ReadLines(FName2);
@@ -344,7 +344,7 @@ namespace ConsoleApp1.Helpers
                         LatestFileName = FName2;
                     }
                 }
-                FName2 = "CM_52_wk_High_low_" + Date.ToString(Format) + ".Csv";
+                FName2 = Path.Combine(MainQH.MasterFolder, "CM_52_wk_High_low_" + Date.ToString(Format) + ".Csv");
                 if (File.Exists(FName2))
                 {
                     var enumerable = File.ReadLines(FName2);
@@ -540,7 +540,7 @@ namespace ConsoleApp1.Helpers
             string FName = null, ExposureFile = null, callput = null, Str;
             var Date = Convert.ToDateTime(MainQH.LastTradingDate);
             var Format = "ddMMyy";
-            FName = "QE" + Date.ToString(Format) + ".Zip";
+            FName = Path.Combine(MainQH.MasterFolder, "QE" + Date.ToString(Format) + ".Zip");
             SL.Add("ScripCode,Closing");
 
             if (!File.Exists(FName))
@@ -551,11 +551,11 @@ namespace ConsoleApp1.Helpers
             }
             else
             {
-                EODZIPClass.UnZipFiles(FName, AppDomain.CurrentDomain.BaseDirectory); 
+                EODZIPClass.UnZipFiles(FName, MainQH.MasterFolder); 
             }
 
             FName = "BI" + Date.ToString(Format) + ".Dbf";
-            var BIPath = AppDomain.CurrentDomain.BaseDirectory  + "\\" + FName;
+            var BIPath = Path.Combine(MainQH.MasterFolder, FName);
             Dictionary<int, bseIndexData> index = new Dictionary<int, bseIndexData>();
             DataTable dt_BI = ParseDBF.ReadDBF(BIPath);
             for (int k = 0; k < dt_BI.Rows.Count; k++)

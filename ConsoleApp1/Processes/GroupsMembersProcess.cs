@@ -1,5 +1,6 @@
 ﻿using ConsoleApp1.Helpers;
 using ConsoleApp1.Models;
+using ConsoleApp1.QH;
 using System.Data;
 using System.Data.Common;
 using System.Data.SQLite;
@@ -25,27 +26,23 @@ namespace ConsoleApp1.Processes
 
                 if (checkFile)
                 {
-                    if (!File.Exists("GroupsI2.dat"))
-                        outputMessage += "GroupsI2.dat,";
+                    if (!File.Exists("GroupsI2.dat")) outputMessage += "GroupsI2.dat,";
+                    if (!File.Exists("MembersI2.dat")) outputMessage += "MembersI2.dat,";
 
-                    if (!File.Exists("MembersI2.dat"))
-                        outputMessage += "MembersI2.dat,";
-
-                    return new StatusMessage
-                    {
-                        message = outputMessage,
-                        status = string.IsNullOrEmpty(outputMessage)
-                    };
+                    return new StatusMessage { message = outputMessage, status = string.IsNullOrEmpty(outputMessage) };
                 }
-                if (!File.Exists("GroupsI2.dat"))
+
+
+
+                if (!File.Exists(Path.Combine(MainQH.MasterFolder, "GroupsI2.dat")))
                 {
-                    outputMessage += "GroupsI2.dat,";
+                    outputMessage += "GroupsI2.dat file not found,";
                     CommonFunctions.WriteToLogFile("GroupsI2.dat File Not Found");
                 }
 
-                if (!File.Exists("MembersI2.dat"))
+                if (!File.Exists(Path.Combine(MainQH.MasterFolder, "MembersI2.dat")))
                 {
-                    outputMessage += "MembersI2.dat,";
+                    outputMessage += "MembersI2.dat file not found";
                     CommonFunctions.WriteToLogFile("MembersI2.dat File Not Found");
                 }
 
@@ -60,55 +57,41 @@ namespace ConsoleApp1.Processes
 
                 CommonFunctions.WriteToLogFile("Loading Groups");
                 StatusMessage returnVal = LoadGroup();
-                if (!returnVal.status)
-                {
-                    return returnVal;
-                }
-
+                if (!returnVal.status) return returnVal;
                 outputMessage = returnVal.message + Environment.NewLine;
                 CommonFunctions.WriteToLogFile("Loading Members");
+                
+                
                 returnVal = LoadMember();
+                if (!returnVal.status) return returnVal;
+                outputMessage += returnVal.message + Environment.NewLine;
 
-                if (!returnVal.status)
-                {
-                    return returnVal;
-                }
-
-                outputMessage +=
-                    returnVal.message + Environment.NewLine;
-
-                string DelQry =
-                    "DELETE FROM Members WHERE GrType in ('Y','M');" +
-                    "DELETE FROM Groups WHERE GrType in ('Y','M')";
+                string DelQry ="DELETE FROM Members WHERE GrType in ('Y','M');" + "DELETE FROM Groups WHERE GrType in ('Y','M')";
 
                 if (SQLiteHelper.Master_dbConnection.State == ConnectionState.Closed)
                 {
                     SQLiteHelper.Master_dbConnection.Open();
                 }
 
-                using (var cmd =
-                    new SQLiteCommand(DelQry, SQLiteHelper.Master_dbConnection))
+                using (var cmd = new SQLiteCommand(DelQry, SQLiteHelper.Master_dbConnection))
                 {
                     cmd.ExecuteNonQuery();
                 }
 
-                CommonFunctions.WriteToLogFile("Deleted Existing Y/M Records");
                 SQLiteHelper.CopySQLiteTabletoChild("Groups", "*");
-
+                CommonFunctions.ExportToCsv("child.Groups", "Groups.csv");
                 CommonFunctions.WriteToLogFile("Groups Table Copied");
+
+
                 SQLiteHelper.CopySQLiteTabletoChild("Members", "*");
+                CommonFunctions.ExportToCsv("child.Members", "Members.csv");
                 CommonFunctions.WriteToLogFile("Members Table Copied");
-
+                
+                
                 SQLiteHelper.Master_dbConnection.Close();
+                CommonFunctions.WriteToLogFile( "GroupMembersExecute Completed Successfully");
 
-                CommonFunctions.WriteToLogFile(
-                    "GroupMembersExecute Completed Successfully");
-
-                return new StatusMessage
-                {
-                    message = outputMessage,
-                    status = true
-                };
+                return new StatusMessage { message = outputMessage, status = true};
             }
             catch (Exception ex)
             {
@@ -132,7 +115,7 @@ namespace ConsoleApp1.Processes
 
                 FileStream GrFile1;
                 string FName1;
-                FName1 = "GroupsI2.dat";
+                FName1 = Path.Combine(MainQH.MasterFolder, "GroupsI2.dat");
                 CommonFunctions.WriteToLogFile("Checking Group File : " + FName1);
 
                 if (File.Exists(FName1))
@@ -224,7 +207,7 @@ namespace ConsoleApp1.Processes
                 FileStream MrFile1;
                 string FName1;
 
-                FName1 = "MembersI2.dat";
+                FName1 = Path.Combine(MainQH.MasterFolder, "MembersI2.dat");
                 if (File.Exists(FName1))
                     MrFile1 = new FileStream(FName1, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
                 else

@@ -41,10 +41,10 @@ namespace ConsoleApp1.Processes
 
             string outputMessage = "";
             var dt = Convert.ToDateTime(MainQH.LastTradingDate);
-            string contractFileName = $"BSE_EQD_CONTRACT_{dt:ddMMyyyy}.csv";
-            string BseFNOBhavCopyFileName = $"BhavCopy_BSE_FO_0_0_0_{dt:yyyyMMdd}_F_0000.csv"; 
+            string contractFileName = Path.Combine(MainQH.MasterFolder, $"BSE_EQD_CONTRACT_{dt:ddMMyyyy}.csv");
+            string BseFNOBhavCopyFileName = Path.Combine(MainQH.MasterFolder, $"BhavCopy_BSE_FO_0_0_0_{dt:yyyyMMdd}_F_0000.csv"); 
                                                                                                
-            string DPFile = $"EQD_DP{dt:ddMMyy}";
+            string DPFile = Path.Combine(MainQH.MasterFolder, $"EQD_DP{dt:ddMMyy}");
 
             if (CheckFile)
             {
@@ -69,8 +69,8 @@ namespace ConsoleApp1.Processes
                 }
                 else
                 {
-                    if (File.Exists("BseDerivMaster.DAT"))
-                        File.Delete("BseDerivMaster.DAT");
+                    if (File.Exists(Path.Combine(MainQH.MasterFolder, "BseDerivMaster.DAT")))
+                        File.Delete(Path.Combine(MainQH.MasterFolder, "BseDerivMaster.DAT"));
 
                     using (SQLiteCommand sqLiteCommand = new SQLiteCommand("drop table if exists BseDerivMaster", SQLiteHelper.Master_dbConnection))
                     {
@@ -111,7 +111,7 @@ namespace ConsoleApp1.Processes
                     using (SQLiteCommand sqLiteCommand = new SQLiteCommand("create table BseDerivMaster ( Exch char, ScripCode int, ScripCodeDaily int, ScripCodeIntraday int, Name varchar(12),ULToken int,OFISType byte,CPType byte,ExpiryDate int,StrikePrice single,CALevel uint16,MinimumLotQuantity int64, Desc varchar(50), TradingSymbol varchar(30)," +
                         "UpperCkt money,LowerCkt money,PrevOpen money,PrevHigh money,PrevLow money,PrevClose money,PrevDayClose money,PrevOI int,FreezeQty int)", SQLiteHelper.Master_dbConnection))
                         ((DbCommand)sqLiteCommand).ExecuteNonQuery();
-                    FileStream output = new FileStream("BseDerivMaster.DAT", FileMode.Create, FileAccess.Write);
+                    FileStream output = new FileStream(Path.Combine(MainQH.MasterFolder, "BseDerivMaster.DAT"), FileMode.Create, FileAccess.Write);
                     FileStream fileStream = new FileStream(contractFileName, FileMode.OpenOrCreate, FileAccess.Read);
                     File.OpenText(contractFileName);
                     BinaryWriter binaryWriter = new BinaryWriter((Stream)output);

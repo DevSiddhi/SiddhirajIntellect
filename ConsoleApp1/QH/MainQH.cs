@@ -1,5 +1,6 @@
 ﻿using ConsoleApp1.Helpers;
 using ConsoleApp1.Models;
+using Grpc.Core;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,6 +17,8 @@ namespace ConsoleApp1.QH
     public static class MainQH
     {
         public static string protoFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "binaryMastersFiles");
+        public static string MasterFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Masters");
+        public static string mfFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "mfFiles");
         public static DateTime LastTradingDate { get; set; }
 
         public static BrokerNameRecords BrokerCodeQH;
@@ -58,11 +61,14 @@ namespace ConsoleApp1.QH
                 CommonFunctions.WriteToLogFile("Starting up QH.....");
                 Console.WriteLine("Starting up QH.....");
                 string basePath = AppDomain.CurrentDomain.BaseDirectory;
-                string masterFile =
-                    Path.Combine(basePath, "Masters.mf");
 
-                string masterServerFile =
-                    Path.Combine(basePath, "MastersServer.mf");
+                if(!Directory.Exists(mfFolder))
+                {
+                    Directory.CreateDirectory(mfFolder);
+                }
+
+                string masterFile = Path.Combine(mfFolder, "Masters.mf");
+                string masterServerFile = Path.Combine(mfFolder, "MastersServer.mf");
 
                 if (File.Exists(masterFile))
                     File.Delete(masterFile);
@@ -78,7 +84,7 @@ namespace ConsoleApp1.QH
                     Directory.CreateDirectory(protoFolder);
                 }
 
-                LastTradingDate =  getLastTradingDateFromCsv();  //getting last trading date from Holiday.csv file
+                LastTradingDate = getLastTradingDate();  //User will enter last trading date here. 
                 if (LastTradingDate == DateTime.MinValue)
                 {
                     throw new InvalidOperationException("Unable to determine last trading date from Holiday.csv");
@@ -94,64 +100,24 @@ namespace ConsoleApp1.QH
             }
         }
 
-        public static DateTime getLastTradingDateFromCsv()
+        public static DateTime getLastTradingDate()
         {
-            try
+            while (true)
             {
-                string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Holiday.csv");
-                if (!File.Exists(filePath))
-                {
-                    throw new FileNotFoundException("Holiday.csv file not found at path: " + filePath);
-                }
-                string[] lines = File.ReadAllLines(filePath);
-               // List<Holidaydata> holidayDataList = new List<Holidaydata>();
-                Dictionary<DateTime, int> holidayDictionary = new Dictionary<DateTime, int>();
+                Console.Write("Enter Previous Trading Date (dd-MM-yyyy): ");
+                string input = Console.ReadLine();
 
-                for (int i = 1; i < lines.Length; i++)
+                if (DateTime.TryParseExact(input, "dd-MM-yyyy",
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out DateTime date))
                 {
-                    string line = lines[i];
-                    string[] columns = line.Split(',');
-                    Holidaydata data = new Holidaydata();
-                    data.HolidayDate = DateTime.ParseExact(columns[0], "dd-MM-yyyy", CultureInfo.InvariantCulture);
-                    data.Day_Name = columns[1];
-                    data.Details = columns[2];
-                    data.IsHoliday = int.Parse(columns[3]);
-                    data.SrNo = int.Parse(columns[4]);
-                    if (!holidayDictionary.ContainsKey(data.HolidayDate.Date)) 
-                    {
-                        holidayDictionary[data.HolidayDate.Date] = data.IsHoliday;
-                    }
-                    else 
-                    {
-                        Console.WriteLine($"Duplicate date found in Holiday.csv: {data.HolidayDate:dd-MM-yyyy}.");
-                        return DateTime.MinValue;
-                    }
-                   // holidayDataList.Add(data);
+                    return date;
                 }
 
-                DateTime checkdate = DateTime.Today.AddDays(-1);
-                while (true)
-                {
-                    if (holidayDictionary.ContainsKey(checkdate.Date))
-                    {
-                        if (holidayDictionary[checkdate.Date] == 0)
-                        {
-                            break;
-                        }
-                    }
-                    checkdate = checkdate.AddDays(-1);
-                }
-                return checkdate.Date;
-
+                Console.WriteLine("Invalid date. Please enter date in dd-MM-yyyy format.");
             }
-            catch (Exception ex) 
-            { 
-                Console.WriteLine(ex.Message);
-                CommonFunctions.ErrorLog(ex);
-                return DateTime.MinValue;
-            }
-            
-            
+
         }
 
         public enum BrokerNameRecords //10.07.2015

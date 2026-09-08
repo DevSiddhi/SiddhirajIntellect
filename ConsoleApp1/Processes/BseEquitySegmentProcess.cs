@@ -33,8 +33,8 @@ namespace ConsoleApp1.Processes
             res = ExecuteBseScrip_New(CheckFile);
             
             string fields = ConfigHelper.CoCode
-                ? "Exch, ScripCode, Name, Desc,TradingSymbol, TickSize, Series, MinimumLotQty, ISIN, CoCode, UpperCkt ,LowerCkt ,PrevOpen ,PrevHigh ,PrevLow ,PrevClose ,YearlyHigh ,YearlyLow, SurveillanceFlag"
-                : "Exch, ScripCode, Name, Desc,TradingSymbol, TickSize, Series, MinimumLotQty, ISIN, UpperCkt ,LowerCkt ,PrevOpen ,PrevHigh ,PrevLow ,PrevClose ,YearlyHigh ,YearlyLow, SurveillanceFlag";
+                ? "Exch, ScripCode, Name, Desc,TradingSymbol, TickSize, Series, MinimumLotQty, ISIN, CoCode, UpperCkt ,LowerCkt ,PrevOpen ,PrevHigh ,PrevLow ,PrevClose ,YearlyHigh ,YearlyLow, SurveillanceFlag, IsCAS"
+                : "Exch, ScripCode, Name, Desc,TradingSymbol, TickSize, Series, MinimumLotQty, ISIN, UpperCkt ,LowerCkt ,PrevOpen ,PrevHigh ,PrevLow ,PrevClose ,YearlyHigh ,YearlyLow, SurveillanceFlag, IsCAS";
 
             if (res.status) 
             {
@@ -48,11 +48,11 @@ namespace ConsoleApp1.Processes
         {
             string outputMessage = "";
             var dt = Convert.ToDateTime(MainQH.LastTradingDate);
-            string DPFile = $"DP{DateTime.Now:ddMMyy}";
-            string REGFile = $"BSE_REG1_IND{dt:ddMMyy}.csv";
-            string securityFileName = $"BSE_EQ_SCRIP_{dt:ddMMyyyy}.csv";
-            string bhavCopyFileName = $"BhavCopy_BSE_CM_0_0_0_{dt:yyyyMMdd}_F_0000.csv";
-            string coCodeFileName = "co_code.csv";
+            string DPFile = Path.Combine(MainQH.MasterFolder,$"DP{DateTime.Now:ddMMyy}");
+            string REGFile = Path.Combine(MainQH.MasterFolder,$"BSE_REG1_IND{dt:ddMMyy}.csv");
+            string securityFileName = Path.Combine(MainQH.MasterFolder,$"BSE_EQ_SCRIP_{dt:ddMMyyyy}.csv");
+            string bhavCopyFileName = Path.Combine(MainQH.MasterFolder,$"BhavCopy_BSE_CM_0_0_0_{dt:yyyyMMdd}_F_0000.csv");
+            string coCodeFileName = Path.Combine(MainQH.MasterFolder,"co_code.csv");
             List<EquityMasterEntry> protoRecordsBSE = new();
 
 
@@ -63,9 +63,9 @@ namespace ConsoleApp1.Processes
                 if (!File.Exists(bhavCopyFileName)) outputMessage += $"{bhavCopyFileName},";
                 if (!File.Exists(DPFile)) outputMessage += $"{DPFile},";
                 if (!File.Exists(REGFile)) outputMessage += $"{REGFile},";
-                if (!File.Exists("BseIndices.txt")) outputMessage += "BseIndices.txt,";
-                if (!File.Exists("Bse_AllowTradingExtra.txt")) outputMessage += "Bse_AllowTradingExtra.txt,";
-                if (!File.Exists("Bse_DoNotAllowTrading.txt")) outputMessage += "Bse_DoNotAllowTrading.txt,";
+                if (!File.Exists(Path.Combine(MainQH.MasterFolder, "BseIndices.txt"))) outputMessage += "BseIndices.txt,";
+                if (!File.Exists(Path.Combine(MainQH.MasterFolder, "Bse_AllowTradingExtra.txt"))) outputMessage += "Bse_AllowTradingExtra.txt,";
+                if (!File.Exists(Path.Combine(MainQH.MasterFolder, "Bse_DoNotAllowTrading.txt"))) outputMessage += "Bse_DoNotAllowTrading.txt,";
                 return new StatusMessage { message = outputMessage };
             }
 
@@ -120,17 +120,17 @@ namespace ConsoleApp1.Processes
                 string path1 = securityFileName;
                 //string path2;
                 string Exch = "";
-                if (!File.Exists("BseIndices.txt"))
+                if (!File.Exists(Path.Combine(MainQH.MasterFolder, "BseIndices.txt")))
                 {
                     CommonFunctions.WriteToLogFile("BseIndices.txt File is not available in current folder");
                     return new StatusMessage { message = "BseIndices.txt File is not available in current folder !!!", status = false };
                 }
-                else if (!File.Exists("Bse_AllowTradingExtra.txt"))
+                else if (!File.Exists(Path.Combine(MainQH.MasterFolder, "Bse_AllowTradingExtra.txt")))
                 {
                     CommonFunctions.WriteToLogFile("Bse_AllowTradingExtra.txt File is not available in current folder");
                     return new StatusMessage { message = "Bse_AllowTradingExtra.txt File is not available in current folder !!!", status = false };
                 }
-                else if (!File.Exists("Bse_DoNotAllowTrading.txt"))
+                else if (!File.Exists(Path.Combine(MainQH.MasterFolder, "Bse_DoNotAllowTrading.txt")))
                 {
                     CommonFunctions.WriteToLogFile("Bse_DoNotAllowTrading.txt File is not available in current folder");
                     return new StatusMessage { message = "Bse_DoNotAllowTrading.txt File is not available in current folder !!!", status = false };
@@ -142,8 +142,8 @@ namespace ConsoleApp1.Processes
                 }
                 else
                 {
-                    if (File.Exists("BseEquityMasterNew.dat"))
-                        File.Delete("BseEquityMasterNew.dat");
+                    if (File.Exists(Path.Combine(MainQH.MasterFolder, "BseEquityMasterNew.dat")))
+                        File.Delete(Path.Combine(MainQH.MasterFolder, "BseEquityMasterNew.dat"));
                     
                     using (SQLiteCommand sqLiteCommand = new SQLiteCommand("drop table if exists BseEquityMaster", SQLiteHelper.Master_dbConnection))
                     {
@@ -234,10 +234,10 @@ namespace ConsoleApp1.Processes
                     using (SQLiteCommand sqLiteCommand = new SQLiteCommand(createBseEquityMaster, SQLiteHelper.Master_dbConnection))
 
                     ((DbCommand)sqLiteCommand).ExecuteNonQuery();
-                    FileStream fileStream = new FileStream("BseEquityMasterNew.dat", FileMode.Create, FileAccess.Write);
-                    string[] strArray1 = File.ReadAllLines("BseIndices.Txt");
-                    string[] source1 = File.ReadAllLines("Bse_AllowTradingExtra.Txt");
-                    string[] source2 = File.ReadAllLines("Bse_DoNotAllowTrading.txt");
+                    FileStream fileStream = new FileStream(Path.Combine(MainQH.MasterFolder, "BseEquityMasterNew.dat"), FileMode.Create, FileAccess.Write);
+                    string[] strArray1 = File.ReadAllLines(Path.Combine(MainQH.MasterFolder, "BseIndices.Txt"));
+                    string[] source1 = File.ReadAllLines(Path.Combine(MainQH.MasterFolder, "Bse_AllowTradingExtra.Txt"));
+                    string[] source2 = File.ReadAllLines(Path.Combine(MainQH.MasterFolder, "Bse_DoNotAllowTrading.txt"));
                     string[] strArray2 = File.ReadAllLines(path1);
                     Structure.Scrip_Master_New_Series scripMasterNewSeries = new Structure.Scrip_Master_New_Series();
                     char ch1 = 'N';

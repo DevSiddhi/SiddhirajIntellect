@@ -29,8 +29,8 @@ namespace ConsoleApp1.Processes
             SQLiteHelper.OpenSqlite();
            
             string fields = ConfigHelper.CoCode
-                ? "Exch, ScripCode, Name, Desc, TradingSymbol, TickSize, Series, MinimumLotQty, ISIN, CoCode, UpperCkt ,LowerCkt ,PrevOpen ,PrevHigh ,PrevLow ,PrevClose ,YearlyHigh ,YearlyLow ,SurveillanceFlag"
-                : "Exch, ScripCode, Name, Desc, TradingSymbol, TickSize, Series, MinimumLotQty, ISIN, UpperCkt ,LowerCkt ,PrevOpen ,PrevHigh ,PrevLow ,PrevClose ,YearlyHigh ,YearlyLow ,SurveillanceFlag";
+                ? "Exch, ScripCode, Name, Desc, TradingSymbol, TickSize, Series, MinimumLotQty, ISIN, CoCode, UpperCkt ,LowerCkt ,PrevOpen ,PrevHigh ,PrevLow ,PrevClose ,YearlyHigh ,YearlyLow ,SurveillanceFlag, IsCAS"
+                : "Exch, ScripCode, Name, Desc, TradingSymbol, TickSize, Series, MinimumLotQty, ISIN, UpperCkt ,LowerCkt ,PrevOpen ,PrevHigh ,PrevLow ,PrevClose ,YearlyHigh ,YearlyLow ,SurveillanceFlag, IsCAS";
            
             res = ExecuteNseSecurity_new(CheckFile);
             if (res.status)
@@ -49,13 +49,13 @@ namespace ConsoleApp1.Processes
             string outputMessage = "";
             DateTime Date = Convert.ToDateTime(MainQH.LastTradingDate);
 
-            string securityFileName = $"NSE_CM_security_{Date:ddMMyyyy}.csv";
-            string NseCMBhavCopyFileName = $"BhavCopy_NSE_CM_0_0_0_{Date:yyyyMMdd}_F_0000.csv";
-            string REGFile = $"NSE_REG1_IND{Date:ddMMyy}.csv";
-            string FoSecBan = $"fo_secban_{DateTime.Today:ddMMyyyy}.csv";
-            string smeFileName = $"sme{Date:ddMMyyyy}.csv";
+            string securityFileName = Path.Combine(MainQH.MasterFolder,$"NSE_CM_security_{Date:ddMMyyyy}.csv");
+            string NseCMBhavCopyFileName =Path.Combine(MainQH.MasterFolder,$"BhavCopy_NSE_CM_0_0_0_{Date:yyyyMMdd}_F_0000.csv");
+            string REGFile = Path.Combine(MainQH.MasterFolder,$"NSE_REG1_IND{Date:ddMMyy}.csv");
+            string FoSecBan = Path.Combine(MainQH.MasterFolder,$"fo_secban_{DateTime.Today:ddMMyyyy}.csv");
+            string smeFileName = Path.Combine(MainQH.MasterFolder,$"sme{Date:ddMMyyyy}.csv");
 
-            string coCodeFileName = $"co_code.csv";
+            string coCodeFileName = Path.Combine(MainQH.MasterFolder,$"co_code.csv");
 
             if (CheckFile)
             {
@@ -63,12 +63,16 @@ namespace ConsoleApp1.Processes
                 if (!File.Exists(NseCMBhavCopyFileName)) outputMessage += $"{NseCMBhavCopyFileName},";
                 if (!File.Exists(REGFile)) outputMessage += $"{REGFile},";
                 if (!File.Exists(FoSecBan)) outputMessage += $"{FoSecBan},";
-                if (!File.Exists("Nse_DoNotAllowTrading.txt")) outputMessage += "Nse_DoNotAllowTrading.txt,";
-                if (!File.Exists("Nse_AllowTradingExtra.txt")) outputMessage += "Nse_AllowTradingExtra.txt,";
-                if (!File.Exists("NseIndices.txt")) outputMessage += "NseIndices.txt,";
-                if (!File.Exists("cm_contract_stream_info.csv")) outputMessage += "cm_contract_stream_info.csv,";
+                if (!File.Exists(Path.Combine(MainQH.MasterFolder,"Nse_DoNotAllowTrading.txt"))) outputMessage += "Nse_DoNotAllowTrading.txt,";
+                if (!File.Exists(Path.Combine(MainQH.MasterFolder,"Nse_AllowTradingExtra.txt"))) outputMessage += "Nse_AllowTradingExtra.txt,";
+                if (!File.Exists(Path.Combine(MainQH.MasterFolder,"NseIndices.txt"))) outputMessage += "NseIndices.txt,";
+                if (!File.Exists(Path.Combine(MainQH.MasterFolder,"cm_contract_stream_info.csv"))) outputMessage += "cm_contract_stream_info.csv,";
                 return new StatusMessage { message = outputMessage };
             }
+
+
+
+
             if (ConfigHelper.CoCode) //checkCoCode.Checked
             {
                 try
@@ -107,6 +111,9 @@ namespace ConsoleApp1.Processes
                     }
                 }
             }
+
+
+
             try
             {
                 CommonFunctions.WriteToLogFile("NSE equity master making process started");
@@ -125,42 +132,42 @@ namespace ConsoleApp1.Processes
                 Hashtable hashtable = new Hashtable();
                 if (!File.Exists(securityFileName))
                 {
-                    string str3 = $"{securityFileName} File is not available in current folder !!!";
+                    string str3 = Path.Combine(MainQH.MasterFolder, $"{securityFileName} File is not available in current folder !!!");
                     CommonFunctions.WriteToLogFile(str3);
-                    return new StatusMessage { message = $"{securityFileName} File is not available in current folder !!!", status = false };
+                    return new StatusMessage { message = $"{Path.Combine(MainQH.MasterFolder,securityFileName)} File is not available in current folder !!!", status = false };
                 }
-                else if (!File.Exists("Nse_DoNotAllowTrading.txt"))
+                else if (!File.Exists(Path.Combine(MainQH.MasterFolder,"Nse_DoNotAllowTrading.txt")))
                 {
-                    string str4 = "Nse_DoNotAllowTrading.txt File is not available in current folder !!!";
+                    string str4 = Path.Combine(MainQH.MasterFolder, "Nse_DoNotAllowTrading.txt File is not available in current folder !!!");
                     CommonFunctions.WriteToLogFile(str4);
                     return new StatusMessage { message = "Nse_DoNotAllowTrading.txt File is not available in current folder !!!", status = false };
                 }
-                else if (!File.Exists("Nse_AllowTradingExtra.txt"))
+                else if (!File.Exists(Path.Combine(MainQH.MasterFolder, "Nse_AllowTradingExtra.txt")))
                 {
-                    string str5 = "Nse_AllowTradingExtra.txt File is not available in current folder !!!";
+                    string str5 = Path.Combine(MainQH.MasterFolder, "Nse_AllowTradingExtra.txt File is not available in current folder !!!");
                     CommonFunctions.WriteToLogFile(str5);
-                    return new StatusMessage { message = "Nse_AllowTradingExtra.txt File is not available in current folder !!!", status = false };
+                    return new StatusMessage { message = $"{Path.Combine(MainQH.MasterFolder,"Nse_AllowTradingExtra.txt")} File is not available in current folder !!!", status = false };
                 }
-                else if (!File.Exists("NseIndices.txt"))
+                else if (!File.Exists(Path.Combine(MainQH.MasterFolder, "NseIndices.txt")))
                 {
-                    string str6 = "NseIndices.txt File is not available in current folder !!!";
+                    string str6 = Path.Combine(MainQH.MasterFolder, "NseIndices.txt File is not available in current folder !!!");
                     CommonFunctions.WriteToLogFile(str6);
-                    return new StatusMessage { message = "NseIndices.txt File is not available in current folder !!!", status = false };
+                    return new StatusMessage { message = $"{Path.Combine(MainQH.MasterFolder,"NseIndices.txt")} File is not available in current folder !!!", status = false };
                 }
                 else
                 {
                     bool flag1;
-                    if (!File.Exists("cm_contract_stream_info.csv"))
+                    if (!File.Exists(Path.Combine(MainQH.MasterFolder,"cm_contract_stream_info.csv")))
                     {
-                        string str7 = "cm_contract_stream_info.csv File is not available in current folder !!!";
+                        string str7 = Path.Combine(MainQH.MasterFolder, "cm_contract_stream_info.csv File is not available in current folder !!!");
                         CommonFunctions.WriteToLogFile(str7);
                         flag1 = false;
-                        return new StatusMessage { message = "cm_contract_stream_info.csv File is not available in current folder !!!", status = false };
+                        return new StatusMessage { message = $"{Path.Combine(MainQH.MasterFolder,"cm_contract_stream_info.csv")} File is not available in current folder !!!", status = false };
                     }
                     else
                         flag1 = true;
-                    if (File.Exists("NseEquityMasterNew.dat"))
-                        File.Delete("NseEquityMasterNew.dat");
+                    if (File.Exists(Path.Combine(MainQH.MasterFolder,"NseEquityMasterNew.dat")))
+                        File.Delete(Path.Combine(MainQH.MasterFolder,"NseEquityMasterNew.dat"));
                     //if (MorningProcess == true)
                     //{
                     //    ((DbConnection)SQLiteHelper.Master_dbConnection).Open();
@@ -236,18 +243,18 @@ namespace ConsoleApp1.Processes
 
                     using (SQLiteCommand sqLiteCommand = new SQLiteCommand(createNseEquityMaster, SQLiteHelper.Master_dbConnection)) ((DbCommand)sqLiteCommand).ExecuteNonQuery();
 
-                    FileStream fileStream = new FileStream("NseEquityMasterNew.dat", FileMode.Create, FileAccess.Write);
-                    string[] source2 = File.ReadAllLines("Nse_DoNotAllowTrading.txt");
-                    string[] source3 = File.ReadAllLines("Nse_AllowTradingExtra.txt");
+                    FileStream fileStream = new FileStream(Path.Combine(MainQH.MasterFolder, "NseEquityMasterNew.dat"), FileMode.Create, FileAccess.Write);
+                    string[] source2 = File.ReadAllLines(Path.Combine(MainQH.MasterFolder, "Nse_DoNotAllowTrading.txt"));
+                    string[] source3 = File.ReadAllLines(Path.Combine(MainQH.MasterFolder, "Nse_AllowTradingExtra.txt"));
                     string[] strArray1;
                     if (flag1)
-                        strArray1 = File.ReadAllLines("cm_contract_stream_info.csv");
+                        strArray1 = File.ReadAllLines(Path.Combine(MainQH.MasterFolder, "cm_contract_stream_info.csv"));
                     else
                         strArray1 = new string[2] { "0", "1" };
                     string[] source4;
-                    if (File.Exists("Nse_AllowTradingExtraByExchange.txt"))
+                    if (File.Exists(Path.Combine(MainQH.MasterFolder, "Nse_AllowTradingExtraByExchange.txt")))
                     {
-                        source4 = File.ReadAllLines("Nse_AllowTradingExtraByExchange.txt");
+                        source4 = File.ReadAllLines(Path.Combine(MainQH.MasterFolder, "Nse_AllowTradingExtraByExchange.txt"));
                         CommonFunctions.WriteToLogFile("Nse_AllowTradingExtraByExchange.txt file reading completed");
                     }
                     else
@@ -255,7 +262,7 @@ namespace ConsoleApp1.Processes
                     char ch1 = 'N';
                     contents1.Add("Token,Symbol,Series,ScName,TickSize,LowerCkt,UpperCkt,Allowed,InPreOpen,FreezeQty,ISIN,Name,Issued Capital,Credit Rating,BoardLotQnty,FaceValue,FreezePercent,BookClosureStartDate,BookCloserEndDate,Dividend,Rights,Bonus,Interest,ExDate,LongName");
                     contents3.Add("Token,ISIN");
-                    string[] strArray2 = File.ReadAllLines("NseIndices.txt");
+                    string[] strArray2 = File.ReadAllLines(Path.Combine(MainQH.MasterFolder, "NseIndices.txt"));
 
                     //if (numMinNSEIndices.Value > 0 && strArray2.Length < numMinNSEIndices.Value)
                     //{

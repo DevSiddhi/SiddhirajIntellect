@@ -37,8 +37,8 @@ namespace ConsoleApp1.Processes
         {
             string outputMessage = "";
             DateTime Date = Convert.ToDateTime(MainQH.LastTradingDate);
-            string contractFileName = $"NSE_FO_contract_{Date:ddMMyyyy}.csv";
-            string NseFNOBhavCopyFileName = $"BhavCopy_NSE_FO_0_0_0_{Date:yyyyMMdd}_F_0000.csv";
+            string contractFileName = Path.Combine(MainQH.MasterFolder, $"NSE_FO_contract_{Date:ddMMyyyy}.csv");
+            string NseFNOBhavCopyFileName = Path.Combine(MainQH.MasterFolder, $"BhavCopy_NSE_FO_0_0_0_{Date:yyyyMMdd}_F_0000.csv");
             if (CheckFile)
             {
                 if (!File.Exists(contractFileName)) outputMessage += $"{contractFileName},";
@@ -63,8 +63,8 @@ namespace ConsoleApp1.Processes
                 }
                 else
                 {
-                    if (File.Exists("NseDerivMaster.DAT"))
-                        File.Delete("NseDerivMaster.DAT");
+                    if (File.Exists(Path.Combine(MainQH.MasterFolder, "NseDerivMaster.DAT")))
+                        File.Delete(Path.Combine(MainQH.MasterFolder, "NseDerivMaster.DAT"));
                     //if (MorningProcess == true)
                     //{
                     //    ((DbConnection)this.Master_dbConnection).Open();
@@ -84,7 +84,7 @@ namespace ConsoleApp1.Processes
                     using (SQLiteCommand sqLiteCommand = new SQLiteCommand("create table NseDerivMaster ( Exch char, ScripCode int, ScripCodeDaily int, ScripCodeIntraday int, Name varchar(12),ULToken int,OFISType byte,CPType byte,ExpiryDate int,StrikePrice single,CALevel uint16,MinimumLotQuantity int64, Desc varchar(50), TradingSymbol varchar(30), TickSize int," +
                         "UpperCkt money,LowerCkt money,PrevOpen money,PrevHigh money,PrevLow money,PrevClose money,PrevDayClose money,PrevOI int,FreezeQty int)", SQLiteHelper.Master_dbConnection))
                         ((DbCommand)sqLiteCommand).ExecuteNonQuery();
-                    FileStream output = new FileStream("NseDerivMaster.DAT", FileMode.Create, FileAccess.Write);
+                    FileStream output = new FileStream(Path.Combine(MainQH.MasterFolder, "NseDerivMaster.DAT"), FileMode.Create, FileAccess.Write);
                     FileStream fileStream = new FileStream(contractFileName, FileMode.OpenOrCreate, FileAccess.Read);
                     File.OpenText(contractFileName);
                     BinaryWriter binaryWriter = new BinaryWriter((Stream)output);

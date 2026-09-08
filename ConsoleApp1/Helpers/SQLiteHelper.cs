@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleApp1.QH;
+using System;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
@@ -17,19 +18,20 @@ namespace ConsoleApp1.Helpers
             {
                 if (Master_dbConnection == null)
                 {
-                    if (!File.Exists("Masters.mf"))
-                        SQLiteConnection.CreateFile("Masters.mf");
+                    if (!File.Exists(Path.Combine(MainQH.mfFolder,"Masters.mf")))
+                        SQLiteConnection.CreateFile(Path.Combine(MainQH.mfFolder,"Masters.mf"));
 
-                    if (!File.Exists("MastersServer.mf"))
-                        SQLiteConnection.CreateFile("MastersServer.mf");
-                    Master_dbConnection = new SQLiteConnection("Data Source=MastersServer.mf;Version=3;");
+                    if (!File.Exists(Path.Combine(MainQH.mfFolder,"MastersServer.mf")))
+                        SQLiteConnection.CreateFile(Path.Combine(MainQH.mfFolder,"MastersServer.mf"));
+                    Master_dbConnection = new SQLiteConnection($"Data Source={Path.Combine(MainQH.mfFolder,"MastersServer.mf")};Version=3;");
                 }
 
                 if (Master_dbConnection.State != ConnectionState.Open)
                 {
                     Master_dbConnection.Open();
                     SQLiteCommand scom = new SQLiteCommand(Master_dbConnection);
-                    scom.CommandText = "ATTACH 'Masters.mf' AS Child";
+                    string masterPath = Path.Combine(MainQH.mfFolder, "Masters.mf");
+                    scom.CommandText = $"ATTACH '{masterPath}' AS Child";
                     scom.ExecuteNonQuery();
 
                     using (var cmd = new SQLiteCommand("drop table if exists MasterDate", Master_dbConnection))
