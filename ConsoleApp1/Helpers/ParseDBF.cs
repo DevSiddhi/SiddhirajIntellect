@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1.Helpers
+namespace JIO_QH.Helpers
 {
     public class ParseDBF
     {

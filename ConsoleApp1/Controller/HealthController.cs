@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1.Controller
+namespace JIO_QH.Controller
 {
     public struct Health()
     {

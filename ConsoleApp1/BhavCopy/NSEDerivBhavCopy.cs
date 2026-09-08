@@ -1,7 +1,7 @@
-﻿using ConsoleApp1.Models;
-using ConsoleApp1.Helpers;
-using ConsoleApp1.QH;
-using ConsoleApp1.Processes;
+﻿using JIO_QH.Models;
+using JIO_QH.Helpers;
+using JIO_QH.QH;
+using JIO_QH.Processes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace ConsoleApp1.BhavCopy
+namespace JIO_QH.BhavCopy
 {
     public class NSEDerivBhavCopy
     {

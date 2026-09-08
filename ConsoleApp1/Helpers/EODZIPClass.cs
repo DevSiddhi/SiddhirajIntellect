@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Zip;
 
-namespace ConsoleApp1.Helpers
+namespace JIO_QH.Helpers
 {
     public static class EODZIPClass
     {

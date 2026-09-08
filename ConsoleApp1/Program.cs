@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ConsoleApp1.BhavCopy;
-using ConsoleApp1.Helpers;
-using ConsoleApp1.Processes;
-using ConsoleApp1.Proto;
-using ConsoleApp1.QH;
+using JIO_QH.BhavCopy;
+using JIO_QH.Helpers;
+using JIO_QH.Processes;
+using JIO_QH.Proto;
+using JIO_QH.QH;
 using System;
 
-namespace ConsoleApp1
+namespace JIO_QH
 {
     internal class Program
     {

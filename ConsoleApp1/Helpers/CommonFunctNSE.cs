@@ -1,7 +1,7 @@
-﻿using ConsoleApp1.Helpers;
-using ConsoleApp1.Models;
-using ConsoleApp1.Processes;
-using ConsoleApp1.QH;
+﻿using JIO_QH.Helpers;
+using JIO_QH.Models;
+using JIO_QH.Processes;
+using JIO_QH.QH;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace ConsoleApp1.Helpers
+namespace JIO_QH.Helpers
 {
     public static class CommonFunctNSE
     {

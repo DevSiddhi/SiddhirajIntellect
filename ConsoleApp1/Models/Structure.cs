@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1.Models
+namespace JIO_QH.Models
 {
     public class Structure
     {

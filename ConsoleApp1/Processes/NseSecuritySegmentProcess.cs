@@ -1,7 +1,7 @@
-﻿using ConsoleApp1.Helpers;
-using ConsoleApp1.Models;
-using ConsoleApp1.Proto;
-using ConsoleApp1.QH;
+﻿using JIO_QH.Helpers;
+using JIO_QH.Models;
+using JIO_QH.Proto;
+using JIO_QH.QH;
 using Master;
 using System;
 using System.Collections;
@@ -16,7 +16,7 @@ using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1.Processes
+namespace JIO_QH.Processes
 {
     public class NseSecuritySegmentProcess
     {

@@ -4,7 +4,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Reflection.Emit;
 
-namespace ConsoleApp1.Helpers
+namespace JIO_QH.Helpers
 {
     public static class ConfigHelper
     {

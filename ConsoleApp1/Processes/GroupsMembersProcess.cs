@@ -1,13 +1,13 @@
-﻿using ConsoleApp1.Helpers;
-using ConsoleApp1.Models;
-using ConsoleApp1.QH;
+﻿using JIO_QH.Helpers;
+using JIO_QH.Models;
+using JIO_QH.QH;
 using System.Data;
 using System.Data.Common;
 using System.Data.SQLite;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
-namespace ConsoleApp1.Processes
+namespace JIO_QH.Processes
 {
     public class GroupsMembersProcess
     {

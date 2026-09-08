@@ -1,8 +1,8 @@
-﻿using ConsoleApp1.Helpers;
-using ConsoleApp1.Models;
-using ConsoleApp1.QH;
+﻿using JIO_QH.Helpers;
+using JIO_QH.Models;
+using JIO_QH.QH;
 using Master;
-using ConsoleApp1.Proto;
+using JIO_QH.Proto;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace ConsoleApp1.Processes
+namespace JIO_QH.Processes
 {
     public class BseDerivativeSegment
     {

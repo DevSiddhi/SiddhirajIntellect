@@ -1,8 +1,8 @@
-﻿using ConsoleApp1.Helpers;
-using ConsoleApp1.Models;
-using ConsoleApp1.Processes;
-using ConsoleApp1.Proto;
-using ConsoleApp1.QH;
+﻿using JIO_QH.Helpers;
+using JIO_QH.Models;
+using JIO_QH.Processes;
+using JIO_QH.Proto;
+using JIO_QH.QH;
 using Grpc.Core;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace ConsoleApp1.BhavCopy
+namespace JIO_QH.BhavCopy
 {
     public class NSECashBhavCopy
     {

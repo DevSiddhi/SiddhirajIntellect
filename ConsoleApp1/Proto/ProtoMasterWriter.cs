@@ -1,6 +1,6 @@
 ﻿using Google.Protobuf;
 
-namespace ConsoleApp1.Proto
+namespace JIO_QH.Proto
 {
     public static class ProtoMasterWriter
     {

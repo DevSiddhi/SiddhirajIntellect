@@ -1,5 +1,5 @@
-﻿using ConsoleApp1.Models;
-using ConsoleApp1.QH;
+﻿using JIO_QH.Models;
+using JIO_QH.QH;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1.Helpers
+namespace JIO_QH.Helpers
 {
     public delegate void AccessCtlDelegate(string str);
 

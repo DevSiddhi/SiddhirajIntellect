@@ -1,10 +1,10 @@
-﻿using ConsoleApp1.QH;
+﻿using JIO_QH.QH;
 using System;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
 
-namespace ConsoleApp1.Helpers
+namespace JIO_QH.Helpers
 {
     public static class SQLiteHelper
     {

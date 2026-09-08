@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace ConsoleApp1.Helpers
+namespace JIO_QH.Helpers
 {
     public static class CommonFunctions
     {

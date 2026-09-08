@@ -1,7 +1,7 @@
-﻿using ConsoleApp1.Helpers;
-using ConsoleApp1.Models;
-using ConsoleApp1.Proto;
-using ConsoleApp1.QH;
+﻿using JIO_QH.Helpers;
+using JIO_QH.Models;
+using JIO_QH.Proto;
+using JIO_QH.QH;
 using Google.Protobuf;
 using Master;
 using Microsoft.VisualBasic;
@@ -18,7 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace ConsoleApp1.Processes
+namespace JIO_QH.Processes
 {
     public class BseEquitySegmentProcess
     {

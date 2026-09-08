@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace ConsoleApp1.Models
+namespace JIO_QH.Models
 {
     public class StatusMessage
     {

@@ -1,5 +1,5 @@
-﻿using ConsoleApp1.Helpers;
-using ConsoleApp1.Models;
+﻿using JIO_QH.Helpers;
+using JIO_QH.Models;
 using Grpc.Core;
 using System;
 using System.Collections.Generic;
@@ -9,10 +9,10 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using static ConsoleApp1.Helpers.CommonFunctions;
-using static ConsoleApp1.Helpers.SQLiteHelper;
+using static JIO_QH.Helpers.CommonFunctions;
+using static JIO_QH.Helpers.SQLiteHelper;
 
-namespace ConsoleApp1.QH
+namespace JIO_QH.QH
 {
     public static class MainQH
     {
