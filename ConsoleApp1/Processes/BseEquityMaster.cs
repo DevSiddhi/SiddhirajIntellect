@@ -20,18 +20,19 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace JIO_QH.Processes
 {
-    public class BseEquitySegmentProcess
+    public class BseEquityMaster
     {
         public static List<CoCodeMaster> coCodeRecords = new List<CoCodeMaster>();
         string T2TFile = "T2TRpt" + DateTime.Today.ToString("yyyyMMdd") + ".Csv";
         public static List<string> DBPendingList = new List<string>();
 
-        public StatusMessage ExecuteBseScrip(bool CheckFile = false)
+        public StatusMessage ExecuteBseEquity(bool CheckFile = false)
         {
             StatusMessage res = new StatusMessage();
             SQLiteHelper.OpenSqlite();
             res = ExecuteBseScrip_New(CheckFile);
             
+
             string fields = ConfigHelper.CoCode
                 ? "Exch, ScripCode, Name, Desc,TradingSymbol, TickSize, Series, MinimumLotQty, ISIN, CoCode, UpperCkt ,LowerCkt ,PrevOpen ,PrevHigh ,PrevLow ,PrevClose ,YearlyHigh ,YearlyLow, SurveillanceFlag, IsCAS"
                 : "Exch, ScripCode, Name, Desc,TradingSymbol, TickSize, Series, MinimumLotQty, ISIN, UpperCkt ,LowerCkt ,PrevOpen ,PrevHigh ,PrevLow ,PrevClose ,YearlyHigh ,YearlyLow, SurveillanceFlag, IsCAS";
@@ -244,7 +245,7 @@ namespace JIO_QH.Processes
                     contents1.Add("ScripCode,ScripId,ScripName,GroupName,SuspStatus,TickSize,MktLot,Allowed,InPreOpen,ISIN,LongName,IssuedCapital,CreditRating,BoardLotQuantity,FaceValue,FreezePercent,BookClosureStartDate,BookClosureEndDate,Dividend,rights,bonus,Interest,ExDate");
                     contents3.Add("ScripCode,ISIN");
                     ScripData_Dict scripData = new ScripData_Dict();
-                    var bseEquityMaster = new BseEquityMaster();
+                    var bseEquityMaster = new Master.BseEquityMaster();
                     var IndexDict = CommonFunctNSE.readBhavCopy_BseIndices();
                     CommonFunctNSE.readBhavCopy_EQ(scripData, bhavCopyFileName);
 

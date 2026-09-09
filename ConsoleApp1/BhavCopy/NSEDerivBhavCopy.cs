@@ -22,6 +22,7 @@ namespace JIO_QH.BhavCopy
             string outputMessage = "";
             try
             {
+
                 CommonFunctions.WriteToLogFile("NSE Deriv Bhav Copy button clicked");
                 string Symbol, Expiry, StrDesc;
                 int Token;

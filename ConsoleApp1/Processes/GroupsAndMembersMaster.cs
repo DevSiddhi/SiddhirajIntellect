@@ -9,13 +9,13 @@ using System.Text.RegularExpressions;
 
 namespace JIO_QH.Processes
 {
-    public class GroupsMembersProcess
+    public class GroupsAndMembersMaster
     {
         public static TGroupRecord[] Group = new TGroupRecord[10];
         public static TMemberRecord[] Member = new TMemberRecord[10];
 
 
-        public StatusMessage Execute(bool checkFile = false)
+        public StatusMessage ExecuteGroupsAndMembers(bool checkFile = false)
         {
             string outputMessage = string.Empty;
             try

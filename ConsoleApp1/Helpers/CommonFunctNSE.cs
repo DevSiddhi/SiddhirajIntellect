@@ -52,8 +52,8 @@ namespace JIO_QH.Helpers
                         "co_code,bsecode,nsesymbol,companyname,companyshortname,categoryname,isin,bsegroup,mcaptype,sectorcode,sectorname,industrycode,industryname,bselistedflag,nselistedflag,displaytype"
                     };
 
-                    if (companyMasterReply != null && companyMasterReply.success) NseSecuritySegmentProcess.coCodeRecords = companyMasterReply.data;
-                    foreach (var item in NseSecuritySegmentProcess.coCodeRecords)
+                    if (companyMasterReply != null && companyMasterReply.success) NseEquityMaster.coCodeRecords = companyMasterReply.data;
+                    foreach (var item in NseEquityMaster.coCodeRecords)
                     {
                         csvData.Add($"{item.co_code},{item.bsecode},{item.nsesymbol},{item.companyname},{item.companyshortname},{item.categoryname},{item.isin},{item.bsegroup},{item.mcaptype},{item.sectorcode},{item.sectorname},{item.industrycode},{item.industryname},{item.bselistedflag},{item.nselistedflag},{item.DisplayType}");
                     }

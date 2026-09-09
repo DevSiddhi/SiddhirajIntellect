@@ -18,12 +18,12 @@ using System.Threading.Tasks;
 
 namespace JIO_QH.Processes
 {
-    public class NseSecuritySegmentProcess
+    public class NseEquityMaster
     {
         public static List<CoCodeMaster> coCodeRecords = new List<CoCodeMaster>();
         public static List<string> DBPendingList = new List<string>();
         public static string T2TFile = "T2TRpt" + DateTime.Today.ToString("yyyyMMdd") + ".Csv";
-        public StatusMessage ExecuteNseSecurity(bool CheckFile = false)
+        public StatusMessage ExecuteNseEquity(bool CheckFile = false)
         {
             StatusMessage res = new StatusMessage();
             SQLiteHelper.OpenSqlite();
