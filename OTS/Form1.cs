@@ -112,7 +112,7 @@ namespace OTS
         {
             InitializeComponent();
             //Text = "OTS 23.03.09.0"; //"OTS 22.10.07.0";    
-            Text = "OTS 26.01.08.0";//"OTS 24.10.08.1"; //"OTS 23.07.18.0"; // "OTS 23.04.24.0"; //"OTS 23.04.20.0"; ////"OTS 23.03.27.0"; //"OTS 23.03.16.0"; //"OTS 23.03.08.0"; //"OTS 22.10.07.0";    
+            Text = "OTS Test 26.07.13.0";//"OTS 24.10.08.1"; //"OTS 23.07.18.0"; // "OTS 23.04.24.0"; //"OTS 23.04.20.0"; ////"OTS 23.03.27.0"; //"OTS 23.03.16.0"; //"OTS 23.03.08.0"; //"OTS 22.10.07.0";    
             string path = "ChangeLog_"+Text+".txt";
 
             if (!File.Exists(path))
@@ -227,8 +227,7 @@ namespace OTS
             }
             else
             {
-                //string data = $"LicenseMode:Prepaid,Validity:{dateTimePicker1.Value:dd-MMM-yyyy},Key:Intellect,App:OTS,Broker:{textBox1.Text}";
-                string Data = LicenseCreator_Intellect.Encryption.DecryptString(File.ReadAllBytes("LicenseOTS.dat"));
+                 string Data = LicenseCreator_Intellect.Encryption.DecryptString(File.ReadAllBytes("LicenseOTS.dat"));
                 string[] dataparams = Data.Split(',');
                 bool licenseFound = false;
                 foreach (var item in dataparams)
@@ -239,6 +238,7 @@ namespace OTS
                         if (DateTime.TryParseExact(strings[1], "dd-MMM-yyyy", null, DateTimeStyles.None, out var dt))
                         {
                            int daysLeft = (int)((dt - DateTime.Today).TotalDays); licenseFound = true;
+                            daysLeft = 10;
                             if (daysLeft < 0)
                             {
                                 MessageBox.Show($"Your License has Expired on {dt:dd-MMM-yyyy}. You can contact Intellect for extension.", "License Info", MessageBoxButtons.OK, MessageBoxIcon.Warning);

@@ -401,13 +401,13 @@ namespace OTS
             public byte AllowNseCash;
             public byte AllowNseDeriv;
             public byte AllowBseCash;
-            //public byte AllowNseCurrency; // --> issue detected
+
             public byte AllowNseCurr; // changed from AllowNseCurrency to AllowNseCurr
             public byte AllowMcxDeriv;//Mcx Changes
-            public byte AllowBseCurr;
-            public byte AllowBseDeriv;
+            public byte AllowBseCurr;            
             public byte AllowNseSLBM;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+            public byte AllowBseDeriv;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
             public byte[] Reserved2;
 
             public ushort BranchID;
@@ -419,15 +419,15 @@ namespace OTS
             public long ChannelID_MD;//MCX Changes
 	        public long ChannelID_ED;
             public long ChannelID_BD;
-            //public long Reserved3;//
             public long ChannelID_SLBM;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
             public long[] Reserved4;
 
             public byte DbNum;
             public byte AllowTotalBuySellQty;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
             public int[] Junk;
+            public int AllowedSource;
             public char AllowFastFeed;
             public char AllowHoldingsMargin;//03/08/2012
             public char DealerType; // 15.10.2016 Hetal
@@ -474,15 +474,15 @@ namespace OTS
             public long ChannelID_CD;
             public long ChannelID_MD;//MCX Changes
             public long ChannelID_ED;
-            //public long Reserved3;//
             public long ChannelID_SLBM;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
             public long[] Reserved4;
 
             public byte DbNum;
             public byte AllowTotalBuySellQty;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
             public int[] Junk;
+            public int AllowedSource;
             public char AllowFastFeed;
             public char AllowHoldingsMargin;//03/08/2012
             public char DealerType; // 15.10.2016 Hetal

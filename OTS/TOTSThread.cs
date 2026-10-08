@@ -4687,7 +4687,7 @@ namespace OTS
                     OTSReplyRec.AllReply[0].LoginReplyNew.ChannelID_BC = Convert.ToInt64("0" + VList[14]);
                     OTSReplyRec.AllReply[0].LoginReplyNew.ChannelID_CD = Convert.ToInt64("0" + VList[15]);
                     OTSReplyRec.AllReply[0].LoginReplyNew.ChannelID_MD = Convert.ToInt64("0" + VList[16]);
-                    OTSReplyRec.AllReply[0].LoginReplyNew.ChannelID_BD = Convert.ToInt64("0" + VList[27]);
+                    
                     if (string.IsNullOrWhiteSpace(Convert.ToString(VList[17])))// == "                ")
                         OTSReplyRec.AllReply[0].LoginReplyNew.ChannelID_ED = 0;//jinal
                     else OTSReplyRec.AllReply[0].LoginReplyNew.ChannelID_ED = Convert.ToInt64(VList[17]);//jinal
@@ -4709,6 +4709,9 @@ namespace OTS
                         OTSReplyRec.AllReply[0].LoginReplyNew.ChannelID_SLBM = Convert.ToInt64(VList[29]);   // uncommented by Kaustubh 20.12.2025
                     else
                         OTSReplyRec.AllReply[0].LoginReplyNew.ChannelID_SLBM = 0;  // VList[27] for Sajag
+
+                    if (VList.Count() > 24)
+                        OTSReplyRec.AllReply[0].LoginReplyNew.AllowedSource = Convert.ToInt32(VList[25]);
 
                     if (VList.Count() > 25)
                     {
@@ -4736,6 +4739,8 @@ namespace OTS
                             OTSReplyRec.AllReply[0].LoginReplyNew.AllowBseDeriv = 1;
                         else
                             OTSReplyRec.AllReply[0].LoginReplyNew.AllowBseDeriv = 0;
+                        
+                        OTSReplyRec.AllReply[0].LoginReplyNew.ChannelID_BD = Convert.ToInt64("0" + VList[27]);
                     }
                     
 
@@ -5549,6 +5554,10 @@ namespace OTS
                                 else
                                     OTSReplyRec.AllReply[0].twoFactorLoginReplyRecord.AllowBseMf = 0;
 
+                                if(VListLogin.Count() > 25)
+                                {
+                                    OTSReplyRec.AllReply[0].twoFactorLoginReplyRecord.AllowedSource = Convert.ToInt32(VListLogin[25]);
+                                }
                                 //C1 = VListLogin[26];
                                 //if (C1 == "Y")
                                 //    OTSReplyRec.AllReply[0].twoFactorLoginReplyRecord.AllowNseSLBM = 1;
