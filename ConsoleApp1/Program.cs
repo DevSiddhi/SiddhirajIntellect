@@ -63,7 +63,10 @@ namespace JIO_QH
                         break;
                 }
             }
+
+            EndingQHProcesses.CreateMastersDateJson();
             
+            Console.WriteLine("All enabled segments processed.");
             Console.ReadLine();
         }
     }

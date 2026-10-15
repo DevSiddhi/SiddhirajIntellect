@@ -16,7 +16,7 @@ namespace JIO_QH.Helpers
         public static string Folder = AppDomain.CurrentDomain.BaseDirectory + "Reports\\";
         public static string LogFileName = Folder + "QH_Log_" + DateTime.Now.ToString("ddMMyy") + ".txt";
         public static readonly string LogFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
-        public static string MasterCSV = AppDomain.CurrentDomain.BaseDirectory + "\\Master_CSV_Files\\";  
+        public static string MasterCSV = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Master_CSV_Files");  
 
         public static void WriteToLogFile(string strOut)
         {
@@ -87,7 +87,7 @@ namespace JIO_QH.Helpers
                     {
                         Directory.CreateDirectory(MasterCSV);
                     }
-                    using (StreamWriter writer = new StreamWriter(MasterCSV + csvFilePath))
+                    using (StreamWriter writer = new StreamWriter(Path.Combine(MasterCSV,csvFilePath)))
                     {
                         // Write header
                         for (int i = 0; i < reader.FieldCount; i++)

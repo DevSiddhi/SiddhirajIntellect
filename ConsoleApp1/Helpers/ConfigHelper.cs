@@ -48,6 +48,11 @@ namespace JIO_QH.Helpers
             CompanyMasterUrl = configuration.GetValue<string>("CompanyMasterUrl");
             CompanyMasterToken = configuration.GetValue<string>("CompanyMasterToken");
         }
+
+        public static MasterDateConfig GetMasterDateConfig()
+        {
+            return configuration.GetSection("MasterDate").Get<MasterDateConfig>();
+        }
     }
 
     public class  segmentSettings
@@ -57,5 +62,15 @@ namespace JIO_QH.Helpers
         public bool NseDerivative { get; set; }
         public bool BseEquity { get; set; }
         public bool BseDerivative { get; set; }
+    }
+    public class MasterDateConfig
+    {
+        public string? FA { get; set; }
+        public string? OA { get; set; }
+        public string? FI { get; set; }
+        public string? OI { get; set; }
+        public string? TU { get; set; }
+        public string? BU { get; set; }
+        public string? MU { get; set; }
     }
 }

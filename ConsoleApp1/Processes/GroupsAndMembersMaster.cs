@@ -184,7 +184,7 @@ namespace JIO_QH.Processes
                 GrFile1.Close();
                 return new StatusMessage
                 {
-                    message = "Groups : " + RecCnt1 + " Records Processed",
+                    message = "Groups Records Processed",
                     status = true
                 };
             }
@@ -275,7 +275,7 @@ namespace JIO_QH.Processes
                 SQLiteHelper.Master_dbConnection.Close();
                 SQLiteHelper.CopySQLiteTabletoChild("Members", "*");
                 MrFile1.Close();
-                return new StatusMessage { message = "Members : " + RecCnt1 + " Records Processed", status = true };
+                return new StatusMessage { message = "Members Records Processed", status = true };
             }
             catch (Exception ex)
             {
